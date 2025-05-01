@@ -16,6 +16,6 @@ app.get("/", (req, res) => {
 });
 
 //routes
-app.use("/api/v1", usersRoutes);
+app.use("/api/v1/users", usersRoutes);
 
 export { app };

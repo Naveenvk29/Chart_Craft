@@ -4,21 +4,24 @@ import {
   loginUser,
   logoutUser,
   getAllUsers,
-  getUserProfile,
-  updateUserProfile,
-  deleteUser,
+  getCurrentUserProfile,
+  updateCurrentUserProfile,
+  deleteCurrentUser,
 } from "../Controllers/usersControllers.js";
+import { isAdmin, isAuthenticated } from "../Middlewares/authMiddleware.js";
 
 const router = Router();
 
 //Auth
-router.route("/").post(registerUser).get(getAllUsers);
+router.route("/").post(registerUser).get(isAuthenticated, isAdmin, getAllUsers);
 router.route("/login").post(loginUser);
 router.route("/logout").post(logoutUser);
 
 //Profile
 router
   .route("/profile")
-  .get(getUserProfile)
-  .put(updateUserProfile)
-  .delete(deleteUser);
+  .get(isAuthenticated, getCurrentUserProfile)
+  .put(isAuthenticated, updateCurrentUserProfile)
+  .delete(isAuthenticated, deleteCurrentUser);
+
+export default router;

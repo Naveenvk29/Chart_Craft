@@ -52,6 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // 👤 user login controller
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  const { rememberMe } = req.body;
   if (!email || !password) {
     return res.status(400).json({
       message: "All fields are required",
@@ -64,7 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if (ispasswordMatch) {
       const token = user.generateToken(user._id);
       res.cookie("jwt", token, {
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : undefined,
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV !== "development",

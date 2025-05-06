@@ -21,6 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    role,
   });
 
   try {
@@ -104,16 +105,6 @@ const logoutUser = asyncHandler(async (req, res) => {
   });
 });
 
-// 🧑‍🤝‍🧑 get users controller
-const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find().select("-password");
-
-  res.status(200).json({
-    message: "Users fetched successfully",
-    users,
-  });
-});
-
 // 🧔🏻 get  Current  controller
 const getCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
@@ -180,7 +171,6 @@ export {
   registerUser,
   loginUser,
   logoutUser,
-  getAllUsers,
   getCurrentUserProfile,
   updateCurrentUserProfile,
   deleteCurrentUser,

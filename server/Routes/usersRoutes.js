@@ -13,7 +13,7 @@ import { isAdmin, isAuthenticated } from "../Middlewares/authMiddleware.js";
 const router = Router();
 
 //Auth
-router.route("/").post(registerUser).get(isAuthenticated, isAdmin, getAllUsers);
+router.route("/").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").post(logoutUser);
 

@@ -25,7 +25,7 @@ const usersApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    getProfile: builder.mutation({
+    getProfile: builder.query({
       query: () => ({
         url: `${USER_URL}/profile`,
         method: "GET",
@@ -48,13 +48,6 @@ const usersApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    getAllUsers: builder.mutation({
-      query: () => ({
-        url: `${USER_URL}/`,
-        method: "GET",
-        credentials: "include",
-      }),
-    }),
   }),
 });
 
@@ -65,5 +58,4 @@ export const {
   useGetProfileMutation,
   useUpdateProfileMutation,
   useDeleteProfileMutation,
-  useGetAllUsersMutation,
 } = usersApi;

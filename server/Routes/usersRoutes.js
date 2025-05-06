@@ -3,12 +3,11 @@ import {
   registerUser,
   loginUser,
   logoutUser,
-  getAllUsers,
   getCurrentUserProfile,
   updateCurrentUserProfile,
   deleteCurrentUser,
 } from "../Controllers/usersControllers.js";
-import { isAdmin, isAuthenticated } from "../Middlewares/authMiddleware.js";
+import { isAuthenticated } from "../Middlewares/authMiddleware.js";
 
 const router = Router();
 

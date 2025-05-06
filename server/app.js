@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 //
 import usersRoutes from "./Routes/usersRoutes.js";
 import excelRoutes from "./Routes/excelRoutes.js";
+import adminRoutes from "./Routes/adminRoutes.js";
 
 const app = express();
 
@@ -20,4 +21,5 @@ app.get("/", (req, res) => {
 //routes
 app.use("/api/v1/users", usersRoutes);
 app.use("/api/v1/excels", excelRoutes);
+app.use("/api/v1/admin", adminRoutes);
 export { app };

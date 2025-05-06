@@ -5,7 +5,13 @@ import { useSigninMutation } from "../../redux/api/usersApi";
 import { setCredentials } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
-import { FaGithub, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
+import {
+  FaGithub,
+  FaGoogle,
+  FaEye,
+  FaEyeSlash,
+  FaApple,
+} from "react-icons/fa6";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -103,18 +109,30 @@ const LoginPage = () => {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className=" ml-5 mr-2 "
-            />
-            <label htmlFor="rememberMe" className="text-md text-gray-100">
-              Remember Me
-            </label>
+          <div className="flex justify-between items-center">
+            <div>
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className=" ml-5 mr-2 "
+              />
+              <label htmlFor="rememberMe" className="text-md text-gray-100">
+                Remember Me
+              </label>
+            </div>
+            {/* //todo need to add forgetpassword */}
+            <h2>
+              <Link
+                to={"/send-mail"}
+                className="text-gray-300 hover:text-gray-50 hover:underline font-medium"
+              >
+                Forgot Password
+              </Link>
+            </h2>
           </div>
+
           {/*  //! if we need forgot password we can add it here */}
           <div className="text-center">
             <p className="text-md text-gray-100">
@@ -147,7 +165,7 @@ const LoginPage = () => {
           <p className="text-center">Or</p>
           {/* // TODO need to add firebase auth or 0auth function */}
           <div className="flex justify-center gap-x-10">
-            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-zinc-400 hover:text-white rounded-3xl">
+            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl">
               <span>
                 <FaGithub size={26} className="text-gray-500" />
               </span>
@@ -159,7 +177,10 @@ const LoginPage = () => {
               </span>
               Google
             </h2>
-            <h2></h2>{" "}
+            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-gray-500 hover:text-black rounded-3xl">
+              <FaApple className="text-white " size={26} />
+              <span>Apple</span>
+            </h2>{" "}
           </div>
         </form>
       </div>

@@ -1,10 +1,12 @@
-import React from "react";
-import LoginPage from "./page/LoginPage";
-
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <div>
-      <LoginPage />
+      <ToastContainer />
+
+      <Outlet />
     </div>
   );
 };

@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 
 //
 import usersRoutes from "./Routes/usersRoutes.js";
+import excelRoutes from "./Routes/excelRoutes.js";
+
 const app = express();
 
 app.use(cors());
@@ -17,5 +19,5 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/api/v1/users", usersRoutes);
-
+app.use("/api/v1/excels", excelRoutes);
 export { app };

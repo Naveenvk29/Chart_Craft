@@ -18,7 +18,7 @@ const handleExcelUpload = async (req, res) => {
     const newExcelEntry = new ExcelFile({
       user: req.user._id,
       filename: file.filename,
-      originalName: file.originalname, // ✅ fixed here
+      originalName: file.originalname,
       data: sheetData,
       uploadedAt: new Date(),
     });

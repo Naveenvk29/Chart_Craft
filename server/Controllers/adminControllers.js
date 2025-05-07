@@ -36,7 +36,7 @@ const removeAnyUser = asyncHandler(async (req, res) => {
 
 //⬇️ Modify user role
 const modifyUserRole = asyncHandler(async (req, res) => {
-  const { role } = req.user;
+  const { role } = req.body;
 
   const user = await User.findById(req.params.id);
   if (!user) throw new Error("user not found");

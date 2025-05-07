@@ -1,6 +1,6 @@
 import User from "../Models/usermodel.js";
 import asyncHandler from "../Utils/asyncHandler.js";
-
+import admin from "../libs/firebaseAdmin.js";
 // ✅ user register controller
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -21,7 +21,6 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
-    role,
   });
 
   try {
@@ -167,6 +166,58 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
   });
 });
 
+// Oauth login
+
+const oauthLoginUser = asyncHandler(async (req, res) => {
+  const { firebaseIdToken } = req.body;
+
+  if (!firebaseIdToken) {
+    return res.status(400).json({ message: "Firebase ID token is missing" });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(firebaseIdToken);
+    const { email, name, uid } = decodedToken;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email not found in token" });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        username: name || email.split("@")[0],
+        email,
+        password: uid, // Replace this logic with secure handling
+      });
+    }
+
+    const token = user.generateToken(user._id);
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      message: "Logged in with Google",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("🔥 Google Login Error:", error);
+    res
+      .status(500)
+      .json({ message: "Google login failed", error: error.message });
+  }
+});
+
 export {
   registerUser,
   loginUser,
@@ -174,4 +225,5 @@ export {
   getCurrentUserProfile,
   updateCurrentUserProfile,
   deleteCurrentUser,
+  oauthLoginUser,
 };

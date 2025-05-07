@@ -1,7 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useSigninMutation } from "../../redux/api/usersApi";
+import {
+  useSigninMutation,
+  useOauthLoginUserMutation,
+} from "../../redux/api/usersApi";
 import { setCredentials } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
@@ -12,6 +15,8 @@ import {
   FaEyeSlash,
   FaApple,
 } from "react-icons/fa6";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../libs/firebase";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +27,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login, { isLoading }] = useSigninMutation();
+  const [oauthLoginUser] = useOauthLoginUserMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -47,6 +53,21 @@ const LoginPage = () => {
     } catch (err) {
       toast.error(`⚠️ ${err?.data?.message || err.error}`);
       console.log(err);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const firebaseIdToken = await result.user.getIdToken();
+
+      // send token to backend
+      const response = await oauthLoginUser({ firebaseIdToken }).unwrap();
+      dispatch(setCredentials(response));
+      navigate("/user-profile");
+    } catch (error) {
+      console.error("Google login failed", error);
+      toast.error("Google login failed");
     }
   };
 
@@ -171,7 +192,10 @@ const LoginPage = () => {
               </span>
               Git Hub
             </h2>
-            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl">
+            <h2
+              className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl"
+              onClick={handleGoogleLogin}
+            >
               <span>
                 <FaGoogle size={26} className="text-red-600 " />
               </span>

@@ -48,6 +48,14 @@ const usersApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    oauthLoginUser: builder.mutation({
+      query: (userdata) => ({
+        url: `${USER_URL}/oauth-login`,
+        method: "post",
+        body: userdata,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -55,7 +63,8 @@ export const {
   useSignupMutation,
   useSigninMutation,
   useLogoutMutation,
-  useGetProfileMutation,
+  useGetProfileQuery,
   useUpdateProfileMutation,
   useDeleteProfileMutation,
+  useOauthLoginUserMutation,
 } = usersApi;

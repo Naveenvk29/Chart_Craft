@@ -16,7 +16,7 @@ import {
   FaApple,
 } from "react-icons/fa6";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../libs/firebase";
+import { auth, googleProvider, githubProvider } from "../../libs/firebase";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -58,7 +58,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
       const firebaseIdToken = await result.user.getIdToken();
 
       // send token to backend
@@ -71,6 +71,20 @@ const LoginPage = () => {
     }
   };
 
+  const handleGitHubLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      const firebaseIdToken = await result.user.getIdToken();
+
+      // send token to backend
+      const response = await oauthLoginUser({ firebaseIdToken }).unwrap();
+      dispatch(setCredentials(response));
+      navigate("/user-profile");
+    } catch (error) {
+      console.error("GitHub login failed", error);
+      toast.error("GitHub login failed");
+    }
+  };
   return (
     <div className="flex justify-center items-center min-h-screen px-20 gap-30 text-white  relative z-10  ">
       <div
@@ -186,7 +200,10 @@ const LoginPage = () => {
           <p className="text-center">Or</p>
           {/* // TODO need to add firebase auth or 0auth function */}
           <div className="flex justify-center gap-x-10">
-            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl">
+            <h2
+              className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl"
+              onClick={handleGitHubLogin}
+            >
               <span>
                 <FaGithub size={26} className="text-gray-500" />
               </span>

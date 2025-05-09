@@ -14,7 +14,7 @@ const Hero = () => {
           </p>
           <div className="flex gap-4">
             <Link
-              to="#features"
+              to="/signup"
               className="bg-white text-black font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition"
             >
               Explore More

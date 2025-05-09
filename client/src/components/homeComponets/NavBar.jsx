@@ -51,6 +51,7 @@ const NavBar = () => {
                 Contact
               </ScrollLink>
             </li>
+            {/* // there some error need to  file */}
             <li className="hover:cursor-pointer hover:scale-105 hover:border-b-2">
               <a
                 href="/signup"

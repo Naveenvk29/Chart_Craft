@@ -79,7 +79,7 @@ const LoginPage = () => {
       // send token to backend
       const response = await oauthLoginUser({ firebaseIdToken }).unwrap();
       dispatch(setCredentials(response));
-      navigate("/user-profile");
+      navigate("/user-dashboard");
     } catch (error) {
       console.error("GitHub login failed", error);
       toast.error("GitHub login failed");
@@ -94,7 +94,7 @@ const LoginPage = () => {
             "radial-gradient(circle, #1a8953, #1f7348, #205d3d, #204932, #1d3527, #182b23, #14221e, #121817, #0f1415, #0c0f11, #08090b, #030303)",
         }}
       ></div>
-      <div className="w-1/3 bg-white/10 backdrop:backdrop-none   p-6  rounded-xl shadow-lg">
+      <div className="w-full md:w-1/3  bg-white/10 backdrop:backdrop-none   p-6  rounded-xl shadow-lg">
         <h1 className="text-2xl font-bold text-center text-gray-100 mb-1">
           Sign In
         </h1>
@@ -198,7 +198,6 @@ const LoginPage = () => {
           </button>
           <hr className="text-gray-400" />
           <p className="text-center">Or</p>
-          {/* // TODO need to add firebase auth or 0auth function */}
           <div className="flex justify-center gap-x-10">
             <h2
               className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl"

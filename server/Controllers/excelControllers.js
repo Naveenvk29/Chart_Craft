@@ -24,10 +24,11 @@ const handleExcelUpload = async (req, res) => {
     });
 
     await newExcelEntry.save();
-    // fs.unlinkSync(file.path); // Delete file from temp uploads
+    fs.unlinkSync(file.path); // Delete file from temp uploads
     res.status(201).json({
       message: "Excel file uploaded and saved.",
       fileId: newExcelEntry._id,
+      data: sheetData,
     });
   } catch (error) {
     console.error("Upload error:", error);

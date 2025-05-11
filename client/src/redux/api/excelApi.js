@@ -13,7 +13,7 @@ const excelsApi = apiSlice.injectEndpoints({
     }),
     fetchAllUserExcelFiles: builder.query({
       query: () => ({
-        url: `${EXCELS_FILE_URL}/`,
+        url: `${EXCELS_FILE_URL}`,
         method: "GET",
         credentials: "include",
       }),

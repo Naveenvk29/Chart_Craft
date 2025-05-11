@@ -25,11 +25,11 @@ const UserDashboard = () => {
       label: "Histroy",
       icon: Activity,
     },
-    {
-      path: "/dashboard/user",
-      label: "User",
-      icon: Users,
-    },
+    // {
+    //   path: "/dashboard/user",
+    //   label: "User",
+    //   icon: Users,
+    // },
     {
       path: "/dashboard/settings",
       label: "Settings",

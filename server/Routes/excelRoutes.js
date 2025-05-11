@@ -4,7 +4,6 @@ import {
   fetchAllUserExcelFiles,
   fetchExcelFileById,
   removeExcelFile,
-  modifyChartConfig,
 } from "../Controllers/excelControllers.js";
 import { isAuthenticated } from "../Middlewares/authMiddleware.js";
 import { upload } from "../Middlewares/MulterMiddleware.js";
@@ -27,8 +26,5 @@ router.get("/:id", isAuthenticated, fetchExcelFileById);
 
 // Delete an Excel file by ID
 router.delete("/:id", isAuthenticated, removeExcelFile);
-
-// Update chart configuration for a specific Excel file
-router.patch("/:id/chart-config", isAuthenticated, modifyChartConfig);
 
 export default router;

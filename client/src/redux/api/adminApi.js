@@ -9,6 +9,7 @@ const adminApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
     modifyUserDetailsbyadmin: builder.mutation({
       query: ({ id, userData }) => ({
@@ -17,6 +18,7 @@ const adminApi = apiSlice.injectEndpoints({
         body: userData,
         credentials: "include",
       }),
+      invalidatesTags: ["User"],
     }),
     removeAnyUser: builder.mutation({
       query: (id) => ({
@@ -24,6 +26,7 @@ const adminApi = apiSlice.injectEndpoints({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: ["User"],
     }),
     modifyUserRole: builder.mutation({
       query: ({ id, userData }) => ({
@@ -32,13 +35,16 @@ const adminApi = apiSlice.injectEndpoints({
         body: userData,
         credentials: "include",
       }),
+      invalidatesTags: ["User"],
     }),
+    // Excel
     fetchAllExcelFiles: builder.query({
       query: () => ({
         url: `${ADMIN_URL}/excels`,
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["ExcelFile"],
     }),
     removeAnyUserExcelFile: builder.mutation({
       query: (id) => ({
@@ -46,6 +52,7 @@ const adminApi = apiSlice.injectEndpoints({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: ["ExcelFile"],
     }),
     modifyAnyUserChartConfig: builder.mutation({
       query: ({ id, excelData }) => ({
@@ -54,6 +61,7 @@ const adminApi = apiSlice.injectEndpoints({
         body: excelData,
         credentials: "include",
       }),
+      invalidatesTags: ["ExcelFile"],
     }),
     viewAnalytics: builder.query({
       query: () => ({

@@ -77,31 +77,9 @@ const removeExcelFile = async (req, res) => {
     res.status(500).json({ error: "failed to delete file" });
   }
 };
-
-// help to custom chart settings
-const modifyChartConfig = async (req, res) => {
-  try {
-    const { config } = req.body;
-
-    const file = await ExcelFile.findByIdAndUpdate(
-      {
-        _id: req.params.id,
-        user: req.user._id,
-      },
-      { chartConfig: config },
-      { new: true }
-    );
-
-    res.json(file);
-  } catch (error) {
-    res.status(500).json({ error: "Faild to update chart config" });
-  }
-};
-
 export {
   handleExcelUpload,
   fetchAllUserExcelFiles,
   fetchExcelFileById,
   removeExcelFile,
-  modifyChartConfig,
 };

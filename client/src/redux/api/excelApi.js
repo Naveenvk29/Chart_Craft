@@ -17,6 +17,7 @@ const excelsApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["ExcelFile"],
     }),
     fetchExcelFileById: builder.query({
       query: (id) => ({
@@ -31,14 +32,7 @@ const excelsApi = apiSlice.injectEndpoints({
         method: "DELETE",
         credentials: "include",
       }),
-    }),
-    modifyChartConfig: builder.mutation({
-      query: ({ id, fileData }) => ({
-        url: `${EXCELS_FILE_URL}/${id}/chart-config`,
-        method: "PATCH",
-        body: fileData,
-        credentials: "include",
-      }),
+      invalidatesTags: ["ExcelFile"],
     }),
   }),
 });
@@ -48,5 +42,4 @@ export const {
   useFetchAllUserExcelFilesQuery,
   useFetchExcelFileByIdQuery,
   useRemoveExcelFileMutation,
-  useModifyChartConfigMutation,
 } = excelsApi;

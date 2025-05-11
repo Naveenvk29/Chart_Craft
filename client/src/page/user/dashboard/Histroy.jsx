@@ -1,9 +1,22 @@
 import { useFetchAllUserExcelFilesQuery } from "../../../redux/api/excelApi";
-
+import { useRemoveExcelFileMutation } from "../../../redux/api/excelApi";
+import { toast } from "react-toastify";
 import moment from "moment";
 
 const History = () => {
   const { data, error, isLoading } = useFetchAllUserExcelFilesQuery();
+
+  const [removeExcelFile] = useRemoveExcelFileMutation();
+
+  const handleDelete = async (id) => {
+    try {
+      await removeExcelFile(id).unwrap();
+      toast.success("Successfully deleted");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete the file.");
+    }
+  };
 
   return (
     <div className="w-full h-full bg-white text-black py-5 px-8">
@@ -13,15 +26,29 @@ const History = () => {
         {error && <p>Error loading files.</p>}
         {data && data.length === 0 && <p>No files found.</p>}
         {data &&
-          data.map((file, index) => {
+          data.map((file) => {
             const formattedDate = moment(file.uploadedAt).format(
               "MMMM D, YYYY, h:mm A"
             );
 
             return (
-              <div key={index} className="my-2 p-2 border rounded">
-                <h3 className="font-semibold">{file.originalName}</h3>
-                <p className="text-sm text-gray-600">Date: {formattedDate}</p>
+              <div
+                key={file._id}
+                className="my-2 p-2 border rounded flex items-center justify-between"
+              >
+                <div className="space-y-3">
+                  <h3 className="font-semibold">{file.originalName}</h3>
+                  <p className="text-sm text-gray-600">Date: {formattedDate}</p>
+                </div>
+                <div className="space-x-3">
+                  <button>View</button>
+                  <button
+                    onClick={() => handleDelete(file._id)}
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             );
           })}

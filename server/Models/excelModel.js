@@ -22,10 +22,6 @@ const excelFileSchema = new mongoose.Schema(
     fileUrl: {
       type: String,
     },
-    chartConfig: {
-      type: Object,
-      default: {},
-    },
     uploadedAt: {
       type: Date,
       default: Date.now,

@@ -16,7 +16,7 @@ import UserDashboard from "./page/user/dashboard/UserDashboard";
 import UserPrivate from "./page/user/UserPrivate";
 import ExcelFile from "./page/user/dashboard/ExcelFile";
 import Histroy from "./page/user/dashboard/Histroy";
-import User from "./page/user/dashboard/User";
+// import User from "./page/user/dashboard/User";
 import Settings from "./page/user/dashboard/Settings";
 
 const AppRouter = () => {
@@ -34,7 +34,7 @@ const AppRouter = () => {
           <Route path="/dashboard" element={<UserDashboard />}>
             <Route path="excel" element={<ExcelFile />} />
             <Route path="histroy" element={<Histroy />} />
-            <Route path="user" element={<User />} />
+            {/* <Route path="user" element={<User />} /> */}
             <Route path="settings" element={<Settings />} />
           </Route>
         </Route>

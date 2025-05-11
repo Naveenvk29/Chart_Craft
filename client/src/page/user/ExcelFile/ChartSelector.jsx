@@ -112,6 +112,8 @@ const ChartSelector = ({ data }) => {
         </div>
       </div>
 
+      {/* //todo add download option like in pnng jpg */}
+
       {xField && yField ? (
         <div className="mt-6  ">{renderChart()}</div>
       ) : (

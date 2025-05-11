@@ -2,6 +2,7 @@ import { useFetchAllUserExcelFilesQuery } from "../../../redux/api/excelApi";
 import { useRemoveExcelFileMutation } from "../../../redux/api/excelApi";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const History = () => {
   const { data, error, isLoading } = useFetchAllUserExcelFilesQuery();
@@ -41,7 +42,9 @@ const History = () => {
                   <p className="text-sm text-gray-600">Date: {formattedDate}</p>
                 </div>
                 <div className="space-x-3">
-                  <button>View</button>
+                  <button>
+                    <Link to={`/dashboard/viewfile/${file._id}`}>View</Link>
+                  </button>
                   <button
                     onClick={() => handleDelete(file._id)}
                     className="text-red-500 hover:underline"

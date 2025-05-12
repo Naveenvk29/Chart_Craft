@@ -1,6 +1,7 @@
 import User from "../Models/usermodel.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 import admin from "../libs/firebaseAdmin.js";
+import logAudit from "../Utils/logAudit.js";
 // ✅ user register controller
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -26,6 +27,15 @@ const registerUser = asyncHandler(async (req, res) => {
   try {
     await user.save();
     const token = user.generateToken(user._id);
+
+    await logAudit({
+      user,
+      action: "REGISTER",
+      targetId: user._id,
+      targetType: "User",
+      description: `User ${user.username} registered successfully.`,
+    });
+
     res.cookie("jwt", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
@@ -64,6 +74,14 @@ const loginUser = asyncHandler(async (req, res) => {
     const ispasswordMatch = await user.isPasswordCorrect(password);
     if (ispasswordMatch) {
       const token = user.generateToken(user._id);
+      // Log the login action
+      await logAudit({
+        user,
+        action: "LOGIN",
+        targetId: user._id,
+        targetType: "User",
+        description: `User ${user.username} logged in successfully.`,
+      });
       res.cookie("jwt", token, {
         maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : undefined,
         httpOnly: true,
@@ -135,6 +153,15 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   user.username = req.body.username || user.username;
   user.email = req.body.email || user.email;
   const updatedUser = await user.save();
+  // Log the update action
+  await logAudit({
+    user,
+    action: "UPDATE_PROFILE",
+    targetId: user._id,
+    targetType: "User",
+    description: `User ${user.username} updated their profile.`,
+  });
+
   res.status(200).json({
     message: "User updated successfully",
     user: {
@@ -179,6 +206,13 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
   }
 
   await user.deleteOne();
+  await logAudit({
+    user,
+    action: "DELETE_USER",
+    targetId: user._id,
+    targetType: "User",
+    description: `User ${user.username} deleted their account.`,
+  });
   res.status(200).json({
     message: `${user.username} deleted successfully`,
     user: {
@@ -217,6 +251,16 @@ const oauthLoginUser = asyncHandler(async (req, res) => {
     }
 
     const token = user.generateToken(user._id);
+
+    // Log the OAuth login action
+    await logAudit({
+      user,
+      action: "OAUTH_LOGIN",
+      targetId: user._id,
+      targetType: "User",
+      description: `User ${user.username} logged in via OAuth (Google).`,
+    });
+
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

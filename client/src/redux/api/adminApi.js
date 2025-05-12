@@ -70,9 +70,16 @@ const adminApi = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    monitaUseractivity: builder.query({
+    monitorUseractivity: builder.query({
       query: () => ({
         url: `${ADMIN_URL}/monitor`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    getAuditLogs: builder.query({
+      query: () => ({
+        url: `${ADMIN_URL}/log`,
         method: "GET",
         credentials: "include",
       }),
@@ -87,7 +94,7 @@ export const {
   useModifyUserRoleMutation,
   useFetchAllExcelFilesQuery,
   useRemoveAnyUserExcelFileMutation,
-  useModifyAnyUserChartConfigMutation,
+  useMonitorUseractivityQuery,
   useViewAnalyticsQuery,
-  useMonitaUseractivityQuery,
+  useGetAuditLogsQuery,
 } = adminApi;

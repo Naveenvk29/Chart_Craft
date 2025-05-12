@@ -6,9 +6,9 @@ import {
   modifyUserRole,
   fetchAllExcelFiles,
   removeAnyUserExcelFile,
-  modifyAnyUserChartConfig,
   viewAnalytics,
-  monitaUseractivity,
+  monitorUserActivity,
+  getAuditLogs,
 } from "../Controllers/adminControllers.js";
 import { isAuthenticated, isAdmin } from "../Middlewares/authMiddleware.js";
 
@@ -22,14 +22,9 @@ router.patch("/user/:id/role", isAuthenticated, isAdmin, modifyUserRole);
 // excels
 router.get("/excels", isAuthenticated, isAdmin, fetchAllExcelFiles);
 router.delete("/excel/:id", isAuthenticated, isAdmin, removeAnyUserExcelFile);
-router.patch(
-  "/excel/:id/chart",
-  isAuthenticated,
-  isAdmin,
-  modifyAnyUserChartConfig
-);
 
 router.get("/analytics", isAuthenticated, isAdmin, viewAnalytics);
-router.get("/monitor", isAuthenticated, isAdmin, monitaUseractivity);
+router.get("/monitor", isAuthenticated, isAdmin, monitorUserActivity);
+router.get("/log", isAuthenticated, isAdmin, getAuditLogs);
 
 export default router;

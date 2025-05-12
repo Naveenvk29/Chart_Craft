@@ -30,7 +30,9 @@ const Header = () => {
         <h2 className="text-lg font-medium tracking-wider">
           {userInfo?.user?.username}
         </h2>
-        {userInfo.user.role === "admin" && <Link>Admin Dashbord</Link>}
+        {userInfo.user.role === "admin" && (
+          <Link to={"/admin"}>Admin Dashbord</Link>
+        )}
         <LogOutIcon
           onClick={handleLogout}
           size={30}

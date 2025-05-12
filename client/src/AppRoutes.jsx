@@ -12,12 +12,20 @@ import App from "./App";
 import LoginPage from "./page/Auth/LoginPage";
 import SignUp from "./page/Auth/SignUp";
 import Home from "./page/Home/Home";
-import UserDashboardLayout from "./page/user/dashboard/UserDashboardLayout";
+
+//user
+import UserDashboard from "./page/user/dashboard/UserDashboard";
 import UserPrivate from "./page/user/UserPrivate";
 import ExcelFile from "./page/user/ExcelFile/ExcelFile";
 import History from "./page/user/ExcelFile/History";
 import ViewExcelFile from "./page/user/ExcelFile/ViewExcelFile";
 import Settings from "./page/user/Settings/Settings";
+import Dashboard from "./page/user/dashboard/Dashboard";
+
+//
+import AdminPrivateRoutes from "./page/admin/AdminPrivateRoutes";
+import AdminDashboard from "./page/admin/AdminDashboard";
+import DashBoard from "./page/admin/DashBoard";
 
 const AppRouter = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -30,8 +38,16 @@ const AppRouter = () => {
           element={userInfo ? <Navigate to="/dashboard" /> : <Home />}
         />
 
+        {/* Admin private routes */}
+        <Route path="" element={<AdminPrivateRoutes />}>
+          <Route path="/admin" element={<AdminDashboard />}>
+            <Route index element={<DashBoard />} />
+          </Route>
+        </Route>
+
         <Route path="" element={<UserPrivate />}>
-          <Route path="/dashboard" element={<UserDashboardLayout />}>
+          <Route path="/dashboard" element={<UserDashboard />}>
+            <Route index element={<Dashboard />} />
             <Route path="excel" element={<ExcelFile />} />
             <Route path="history" element={<History />} />
             <Route path="settings" element={<Settings />} />

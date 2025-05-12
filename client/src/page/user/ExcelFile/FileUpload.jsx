@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { useUploadExcelFileMutation } from "../../../redux/api/excelApi";
 import { toast } from "react-toastify";
 import ChartSelector from "./ChartSelector";
+import ThreeChartSelector from "./threeChartSelector";
 const Fileupload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [excelData, setExcelData] = useState([]);
@@ -77,6 +78,7 @@ const Fileupload = () => {
         {error && <p className="mt-4 text-red-600">Error uploading file</p>}
       </div>
       {excelData.length > 0 && <ChartSelector data={excelData} />}
+      {excelData.length > 0 && <ThreeChartSelector data={excelData} />}
     </div>
   );
 };

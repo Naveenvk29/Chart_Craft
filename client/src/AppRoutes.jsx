@@ -26,7 +26,10 @@ import Dashboard from "./page/user/dashboard/Dashboard";
 import AdminPrivateRoutes from "./page/admin/AdminPrivateRoutes";
 import AdminDashboard from "./page/admin/AdminDashboard";
 import DashBoard from "./page/admin/DashBoard";
-
+import UserManagement from "./page/admin/UserManagement";
+import Analytics from "./page/admin/Analytics";
+import UserActivity from "./page/admin/UserActivity";
+import RoleManagement from "./page/admin/RoleManagement";
 const AppRouter = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -42,6 +45,10 @@ const AppRouter = () => {
         <Route path="" element={<AdminPrivateRoutes />}>
           <Route path="/admin" element={<AdminDashboard />}>
             <Route index element={<DashBoard />} />
+            <Route path="user-management" element={<UserManagement />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="user-activity" element={<UserActivity />} />
+            <Route path="role-management" element={<RoleManagement />} />
           </Route>
         </Route>
 

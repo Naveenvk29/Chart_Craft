@@ -1,5 +1,4 @@
-import React from "react";
-import FileUpload from "../ExcelFile/Fileupload";
+import FileUpload from "./Fileupload";
 
 const ExcelFile = () => {
   return (

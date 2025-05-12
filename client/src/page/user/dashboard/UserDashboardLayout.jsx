@@ -21,8 +21,8 @@ const UserDashboard = () => {
       icon: FileBarChart,
     },
     {
-      path: "/dashboard/histroy",
-      label: "Histroy",
+      path: "/dashboard/history",
+      label: "History",
       icon: Activity,
     },
     // {

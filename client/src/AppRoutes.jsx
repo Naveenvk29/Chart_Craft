@@ -12,12 +12,12 @@ import App from "./App";
 import LoginPage from "./page/Auth/LoginPage";
 import SignUp from "./page/Auth/SignUp";
 import Home from "./page/Home/Home";
-import UserDashboard from "./page/user/dashboard/UserDashboard";
+import UserDashboardLayout from "./page/user/dashboard/UserDashboardLayout";
 import UserPrivate from "./page/user/UserPrivate";
-import ExcelFile from "./page/user/dashboard/ExcelFile";
-import Histroy from "./page/user/dashboard/Histroy";
+import ExcelFile from "./page/user/ExcelFile/ExcelFile";
+import History from "./page/user/ExcelFile/History";
 import ViewExcelFile from "./page/user/ExcelFile/ViewExcelFile";
-import Settings from "./page/user/dashboard/Settings";
+import Settings from "./page/user/Settings/Settings";
 
 const AppRouter = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -31,10 +31,9 @@ const AppRouter = () => {
         />
 
         <Route path="" element={<UserPrivate />}>
-          <Route path="/dashboard" element={<UserDashboard />}>
+          <Route path="/dashboard" element={<UserDashboardLayout />}>
             <Route path="excel" element={<ExcelFile />} />
-            <Route path="histroy" element={<Histroy />} />
-            {/* <Route path="user" element={<User />} /> */}
+            <Route path="history" element={<History />} />
             <Route path="settings" element={<Settings />} />
             <Route path="viewfile/:id" element={<ViewExcelFile />} />
           </Route>

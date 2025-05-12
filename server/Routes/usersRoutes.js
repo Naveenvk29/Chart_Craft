@@ -5,6 +5,7 @@ import {
   logoutUser,
   getCurrentUserProfile,
   updateCurrentUserProfile,
+  changePasswordCurrentUser,
   deleteCurrentUser,
   oauthLoginUser,
 } from "../Controllers/usersControllers.js";
@@ -22,6 +23,7 @@ router
   .route("/profile")
   .get(isAuthenticated, getCurrentUserProfile)
   .put(isAuthenticated, updateCurrentUserProfile)
-  .delete(isAuthenticated, deleteCurrentUser);
+  .delete(isAuthenticated, deleteCurrentUser)
+  .patch(isAuthenticated, changePasswordCurrentUser);
 
 export default router;

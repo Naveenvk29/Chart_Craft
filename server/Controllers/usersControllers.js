@@ -134,9 +134,6 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   }
   user.username = req.body.username || user.username;
   user.email = req.body.email || user.email;
-  if (req.body.password) {
-    user.password = req.body.password;
-  }
   const updatedUser = await user.save();
   res.status(200).json({
     message: "User updated successfully",
@@ -144,6 +141,30 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       username: updatedUser.username,
       email: updatedUser.email,
+      role: updatedUser.role,
+    },
+  });
+});
+
+// 🔒 change password Current controller
+
+const changePasswordCurrentUser = asyncHandler(async (req, res) => {
+  const newPassword = req.body.newPassword;
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  res.status(200).json({
+    message: "Password updated successfully",
+    user: {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
     },
   });
 });
@@ -226,6 +247,7 @@ export {
   logoutUser,
   getCurrentUserProfile,
   updateCurrentUserProfile,
+  changePasswordCurrentUser,
   deleteCurrentUser,
   oauthLoginUser,
 };

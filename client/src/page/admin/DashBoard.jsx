@@ -1,5 +1,3 @@
-import React from "react";
-
 const DashBoard = () => {
   return (
     <div className="w-full  mx-auto h-full bg-white text-black  px-8 shadow-md rounded-md">

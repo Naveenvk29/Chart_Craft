@@ -31,6 +31,7 @@ const usersApi = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
     updateProfile: builder.mutation({
       query: (userData) => ({
@@ -39,6 +40,7 @@ const usersApi = apiSlice.injectEndpoints({
         body: userData,
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
     deleteProfile: builder.mutation({
       query: (userData) => ({
@@ -47,6 +49,7 @@ const usersApi = apiSlice.injectEndpoints({
         body: userData,
         credentials: "include",
       }),
+      invalidatesTags: ["User"],
     }),
     oauthLoginUser: builder.mutation({
       query: (userdata) => ({
@@ -63,6 +66,7 @@ const usersApi = apiSlice.injectEndpoints({
         body: passwordData,
         credentials: "include",
       }),
+      providesTags: ["User"],
     }),
   }),
 });

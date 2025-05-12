@@ -41,7 +41,7 @@ const UserProfile = () => {
                 className="h-32 w-32 rounded-full border-2 border-gray-300 hover:scale-105 transition-transform duration-300"
               />
               <div className="flex flex-col space-y-1">
-                <h2 className="text-3xl font-semibold capitalize">
+                <h2 className="text-3xl font-semibold ">
                   {userDetails.user.username}
                 </h2>
                 <p className="text-gray-600 font-medium">

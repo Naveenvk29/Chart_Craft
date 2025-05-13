@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { Bar, Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  RadialLinearScale,
 } from "chart.js";
 
 ChartJS.register(
@@ -20,10 +21,12 @@ ChartJS.register(
   LineElement,
   PointElement,
   ArcElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend
 );
+import html2canvas from "html2canvas";
 
 const ChartSelector = ({ data }) => {
   const [chartType, setChartType] = useState("bar");
@@ -67,9 +70,22 @@ const ChartSelector = ({ data }) => {
         return <Line data={chartData} />;
       case "pie":
         return <Pie data={chartData} />;
+      case "doughnut":
+        return <Doughnut data={chartData} />;
+      case "polarArea":
+        return <PolarArea data={chartData} />;
       default:
         return <Bar data={chartData} />;
     }
+  };
+
+  const downloadImage = async (type = "png") => {
+    const chartElement = document.getElementById("chart-container");
+    const canvas = await html2canvas(chartElement);
+    const link = document.createElement("a");
+    link.download = `chart.${type}`;
+    link.href = canvas.toDataURL(`image/${type}`);
+    link.click();
   };
 
   return (
@@ -86,6 +102,8 @@ const ChartSelector = ({ data }) => {
             <option value="bar">Bar</option>
             <option value="line">Line</option>
             <option value="pie">Pie</option>
+            <option value="doughnut">Doughnut</option>
+            <option value="polarArea">PolarArea</option>
           </select>
         </div>
         <div className="space-x-2">
@@ -111,13 +129,26 @@ const ChartSelector = ({ data }) => {
           </select>
         </div>
       </div>
-
-      {/* //todo add download option like in pnng jpg */}
-
-      {xField && yField ? (
-        <div className="mt-6  ">{renderChart()}</div>
-      ) : (
-        <p>Please select both X and Y axes.</p>
+      {xField && yField && (
+        <>
+          <div className="mt-4 flex gap-4 justify-end ">
+            <button
+              onClick={() => downloadImage("png")}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Download PNG
+            </button>
+            <button
+              onClick={() => downloadImage("jpeg")}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              Download JPG
+            </button>
+          </div>
+          <div id="chart-container" className="mt-6 h-160 flex justify-center ">
+            {renderChart()}
+          </div>
+        </>
       )}
     </div>
   );

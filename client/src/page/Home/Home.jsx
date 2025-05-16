@@ -8,11 +8,11 @@ const Home = () => {
   return (
     <div className="bg-black text-white">
       <NavBar />
-      {/* <Hero />
-      <FeatureSection />
-      <AboutSection />
-      <ContactSection />
-      <FooterSecction /> */}
+      <Hero />
+      {/* <FeatureSection /> */}
+      {/* <AboutSection /> */}
+      {/* <ContactSection /> */}
+      {/* <FooterSecction /> */}
     </div>
   );
 };

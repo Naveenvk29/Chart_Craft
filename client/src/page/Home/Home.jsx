@@ -6,7 +6,7 @@ import FooterSecction from "../../components/homeComponets/FooterSecction";
 import NavBar from "../../components/homeComponets/NavBar";
 const Home = () => {
   return (
-    <div className="bg-black text-white">
+    <div className="w-full min-h-screen bg-black">
       <NavBar />
       <Hero />
       {/* <FeatureSection /> */}

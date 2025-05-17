@@ -25,7 +25,7 @@ const Hero = () => {
     <div
       ref={ref}
       className={cn(
-        "relative min-h-screen z-20 mx-auto mb-20 mt-20 max-w-7xl text-center font-semibold  text-neutral-300",
+        "relative  z-20 mx-auto mb-20 mt-20 max-w-7xl text-center font-semibold  text-neutral-300",
         "text-4xl md:text-7xl"
       )}
       // style={{ minHeight: "200vh" }}
@@ -39,7 +39,7 @@ const Hero = () => {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={cn(
           "inline-block bg-clip-text text-transparent my-5 tracking-tight max-w-4xl",
-          "bg-[radial-gradient(61.17%_178.53%_at_38.83%_-13.54%,#3B3B3B_0%,#888787_12.61%,#FFFFFF_50%,#888787_80%,#3B3B3B_100%)]"
+          "bg-[radial-gradient(61.17%_178.53%_at_38.83%_-13.54%,#FFFFFF_0%,#D4D4D4_20%,#888787_50%,#3B3B3B_80%,#1A1A1A_100%)] dark:bg-[radial-gradient(61.17%_178.53%_at_38.83%_-13.54%,#3B3B3B_0%,#888787_12.61%,#FFFFFF_50%,#888787_80%,#3B3B3B_100%)]"
         )}
       >
         Your All-in-One Excel Visualization Tool.

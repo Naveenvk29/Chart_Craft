@@ -39,7 +39,6 @@ const LoginPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       toast.error("⚠️ Please fill in all fields");
       return;
@@ -49,10 +48,8 @@ const LoginPage = () => {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res, rememberMe }));
       navigate("/user-profile");
-      console.log("This remember me", rememberMe);
     } catch (err) {
       toast.error(`⚠️ ${err?.data?.message || err.error}`);
-      console.log(err);
     }
   };
 
@@ -60,13 +57,11 @@ const LoginPage = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const firebaseIdToken = await result.user.getIdToken();
-
-      // send token to backend
       const response = await oauthLoginUser({ firebaseIdToken }).unwrap();
       dispatch(setCredentials(response));
       navigate("/user-profile");
     } catch (error) {
-      console.error("Google login failed", error);
+      console.log(error);
       toast.error("Google login failed");
     }
   };
@@ -75,158 +70,157 @@ const LoginPage = () => {
     try {
       const result = await signInWithPopup(auth, githubProvider);
       const firebaseIdToken = await result.user.getIdToken();
-
-      // send token to backend
       const response = await oauthLoginUser({ firebaseIdToken }).unwrap();
       dispatch(setCredentials(response));
       navigate("/user-dashboard");
     } catch (error) {
-      console.error("GitHub login failed", error);
+      console.log(error);
       toast.error("GitHub login failed");
     }
   };
+
   return (
-    <div className="flex justify-center items-center min-h-screen px-20 gap-30 text-white  relative z-10  ">
-      <div
-        className=" absolute w-full h-screen -z-50 "
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #1a8953, #1f7348, #205d3d, #204932, #1d3527, #182b23, #14221e, #121817, #0f1415, #0c0f11, #08090b, #030303)",
-        }}
-      ></div>
-      <div className="w-full md:w-1/3  bg-white/10 backdrop:backdrop-none   p-6  rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center text-gray-100 mb-1">
-          Sign In
-        </h1>
-        <p className="text-md font-medium text-gray-200 text-center mb-6">
-          Welcome back! Please log in to continue.
-        </p>
+    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-950 flex flex-col md:flex-row ">
+      {/* Left: Form Section */}
+      <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-4xl font-bold text-center text-neutral-800 dark:text-neutral-100">
+            Sign In
+          </h1>
+          <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
+            Welcome back! Please log in to continue.
+          </p>
 
-        <form onSubmit={submitHandler} className="space-y-5">
-          <div className="space-y-2">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-100"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full p-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2 relative">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-100"
-            >
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              className="w-full p-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-6 top-11 text-gray-300 hover:text-white"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className=" ml-5 mr-2 "
-              />
-              <label htmlFor="rememberMe" className="text-md text-gray-100">
-                Remember Me
+          <form onSubmit={submitHandler} className="space-y-5">
+            {/* Email */}
+            <div className="space-y-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
+              >
+                Email Address
               </label>
+              <input
+                type="email"
+                id="email"
+                className="w-full px-4 py-3 rounded-md bg-transparent border border-neutral-500 placeholder-neutral-600 dark:placeholder-neutral-400 text-neutral-800 dark:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-            {/* //todo need to add forgetpassword */}
-            <h2>
-              <Link
-                to={"/send-mail"}
-                className="text-gray-300 hover:text-gray-50 hover:underline font-medium"
-              >
-                Forgot Password
-              </Link>
-            </h2>
-          </div>
 
-          {/*  //! if we need forgot password we can add it here */}
-          <div className="text-center">
-            <p className="text-md text-gray-100">
-              New Customer?{" "}
-              <Link
-                to={"/signup"}
-                className="hover:underline hover:text-green-500"
+            {/* Password */}
+            <div className="relative space-y-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
               >
-                <span className="text-lg text-green-600 font-bold">
-                  {" "}
-                  Register
-                </span>
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                className="w-full px-4 py-3 rounded-md bg-transparent border border-neutral-500 placeholder-neutral-600 dark:placeholder-neutral-400 text-neutral-800 dark:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-10 text-neutral-400 hover:text-white"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+
+            {/* Remember & Forgot */}
+            <div className="flex items-center justify-between text-sm text-neutral-700 dark:text-neutral-300">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="accent-blue-500"
+                />
+                Remember me
+              </label>
+              <Link to="/send-mail" className="hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
+            >
+              {isLoading ? (
+                <Loader className="mx-auto animate-spin" />
+              ) : (
+                "Sign In"
+              )}
+            </button>
+
+            {/* Divider */}
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-px w-full bg-neutral-400 dark:bg-neutral-700"></div>
+              <span className="text-neutral-500 text-sm w-full text-center">
+                Or continue with
+              </span>
+              <div className="h-px w-full bg-neutral-400 dark:bg-neutral-700"></div>
+            </div>
+
+            {/* OAuth Buttons */}
+            <div className="space-y-2">
+              <button
+                onClick={handleGitHubLogin}
+                className="flex items-center justify-center w-full py-3 gap-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-900 transition"
+              >
+                <FaGithub size={20} />
+                Continue with GitHub
+              </button>
+              <button
+                onClick={handleGoogleLogin}
+                className="flex items-center justify-center w-full py-3 gap-3 rounded-lg bg-white text-black border border-neutral-400 hover:bg-neutral-100 transition"
+              >
+                <FaGoogle size={20} className="text-red-500" />
+                Continue with Google
+              </button>
+            </div>
+
+            <p className="text-sm text-center text-neutral-600 dark:text-neutral-300">
+              New to our platform?{" "}
+              <Link
+                to="/signup"
+                className="text-green-600 font-semibold hover:underline"
+              >
+                Register
               </Link>
             </p>
-          </div>
-          <button
-            disabled={isLoading}
-            type="submit"
-            className="w-full p-3 bg-gray-600 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed  "
-          >
-            {isLoading ? (
-              <div className="flex justify-center">
-                <Loader className="animate-spin text-white" />
-              </div>
-            ) : (
-              "Sign In"
-            )}
-          </button>
-          <hr className="text-gray-400" />
-          <p className="text-center">Or</p>
-          <div className="flex justify-center gap-x-10">
-            <h2
-              className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl"
-              onClick={handleGitHubLogin}
-            >
-              <span>
-                <FaGithub size={26} className="text-gray-500" />
-              </span>
-              Git Hub
-            </h2>
-            <h2
-              className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-white hover:text-black rounded-3xl"
-              onClick={handleGoogleLogin}
-            >
-              <span>
-                <FaGoogle size={26} className="text-red-600 " />
-              </span>
-              Google
-            </h2>
-            <h2 className="flex gap-2 p-3 cursor-pointer hover:scale-105 hover:bg-gray-500 hover:text-black rounded-3xl">
-              <FaApple className="text-white " size={26} />
-              <span>Apple</span>
-            </h2>{" "}
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-      <div className="w-1/2 ">
-        <div className=" bg-green-300">
-          <div>sd</div>
+
+      {/* Right: Visual Side */}
+      <div className="hidden md:flex w-1/2 bg-neutral-50 dark:bg-neutral-800 items-center justify-center p-10">
+        <div className="max-w-md text-center space-y-6">
+          <img
+            src="https://illustrations.popsy.co/white/dashboard-monitor.svg"
+            alt="Login Illustration"
+            className="w-full h-auto"
+          />
+          <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">
+            Unlock powerful tools and insights
+          </h2>
+          <p className="text-neutral-600 dark:text-neutral-400">
+            Sign in to access your personalized dashboard, manage settings, and
+            collaborate effectively.
+          </p>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ const NavBar = () => {
     <motion.div
       ref={ref}
       initial={false}
-      className=" sticky inset-x-0 top-0 z-[100] w-full"
+      className=" sticky inset-x-0 top-0 z-[100] w-full bg-neutral-300 dark:bg-neutral-950"
     >
       <motion.div
         animate={{

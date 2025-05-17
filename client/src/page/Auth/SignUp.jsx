@@ -42,125 +42,121 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center gap-20 min-h-screen px-20 text-white relative z-50">
-      <div
-        className=" absolute w-full h-screen -z-50 "
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #1a8953, #1f7348, #205d3d, #204932, #1d3527, #182b23, #14221e, #121817, #0f1415, #0c0f11, #08090b, #030303)",
-        }}
-      ></div>
-      <div className="w-1/3 bg-white/10 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center text-gray-100 mb-1">
+    <div className="bg-neutral-300 dark:bg-neutral-950 min-h-screen flex flex-col md:flex-row justify-around items-center">
+      {/* Left Form Side */}
+      <div className="px-10 py-4 min-w-4xl min-h-screen flex flex-col justify-center items-center space-y-2">
+        <h1 className="text-center text-4xl font-bold tracking-tight text-neutral-600 dark:text-neutral-300 uppercase">
           Sign Up
         </h1>
-        <p className="text-md font-medium text-gray-200 text-center mb-6">
-          Create an account to get started
+        <p className="text-center text-sm tracking-wide font-medium text-neutral-500">
+          Create a new account to get started.
         </p>
 
-        <form onSubmit={submitHandler} className="space-y-5">
-          <div className="space-y-3">
+        <form onSubmit={submitHandler} className="space-y-5 w-xl mx-auto">
+          <div className="space-y-2">
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-100"
+              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
             >
               Username
             </label>
             <input
               type="text"
               id="username"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
+              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
+              placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username"
               required
             />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-100"
+              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
             >
-              Email
+              Email Address
             </label>
             <input
               type="email"
               id="email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
+              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
+              placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email"
               required
             />
           </div>
 
-          <div className="relative space-y-3">
+          <div className="space-y-2 relative">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-100"
+              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
             >
               Password
             </label>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
+              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-5 top-12 text-gray-300 hover:text-white"
+              className="absolute right-6 top-11 text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
 
-          <div className="relative space-y-3">
+          <div className="space-y-2 relative">
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-100"
+              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
             >
               Confirm Password
             </label>
             <input
               type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-500 focus:outline-none text-white bg-transparent placeholder-gray-400"
+              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
+              placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm password"
               required
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-5 top-12 text-gray-300 hover:text-white"
+              className="absolute right-6 top-11 text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
 
           <div className="text-center">
-            <p className="text-md text-gray-100">
+            <p className="text-md text-neutral-600 dark:text-neutral-300">
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-blue-400 hover:underline font-bold"
+                className="hover:underline hover:text-green-500"
               >
-                Sign In
+                <span className="text-lg text-green-600 font-bold">
+                  Sign In
+                </span>
               </Link>
             </p>
           </div>
 
           <button
-            type="submit"
-            className="w-full p-3 bg-gray-700 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
+            type="submit"
+            className="w-full p-3 bg-gray-600 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <div className="flex justify-center">
@@ -172,15 +168,26 @@ const SignUp = () => {
           </button>
         </form>
       </div>
-      {/* //todo add something */}
-      <div className="w-1/2">
-        <div className="w-3/4 mx-auto min-h-[50%] bg-green-500 rounded-tr-4xl">
-          <div className="p-15">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-            assumenda nemo architecto cumque voluptates dignissimos odit
-            ratione, ad dicta ipsum et fugit, iure nulla totam aliquam, enim
-            voluptas pariatur possimus? Sit ex at laudantium nemo! Quasi ullam
-            quis iste, adipisci, quibusdam illo ab, modi perspiciatis \
+
+      {/* Right Panel */}
+      <div className="bg-neutral-100 dark:bg-neutral-800 min-h-screen min-w-4xl flex flex-col justify-center items-center p-10">
+        <div className="bg-bg-neutral-50 text-neutral-900 dark:text-neutral-100 rounded-2xl p-10 shadow-xl w-4/5">
+          <h2 className="text-2xl font-bold mb-4">Welcome to Chart Craft!</h2>
+          <p className="text-md leading-relaxed">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda,
+            repudiandae laborum neque eos eaque necessitatibus. Nulla obcaecati
+            soluta at ad expedita. Amet rem architecto, quasi error, voluptatem
+            accusamus odit temporibus fuga doloribus placeat consectetur optio.
+            Maxime ea, vitae ipsa quo dolor ipsum ut harum sed hic incidunt
+            labore, laboriosam facilis itaque assumenda cum reprehenderit modi?
+            Hic accusamus ex a natus.
+          </p>
+          <div className="mt-6">
+            <ul className="list-disc pl-5 space-y-1 text-sm">
+              <li>Collaborate with your team</li>
+              <li>Secure and easy authentication</li>
+              <li>Access powerful tools and analytics</li>
+            </ul>
           </div>
         </div>
       </div>

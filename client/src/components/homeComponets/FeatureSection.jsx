@@ -8,7 +8,7 @@ import {
   Share2,
 } from "lucide-react";
 
-import { motion, LayoutGroup, stagger } from "motion/react";
+import { motion, LayoutGroup } from "motion/react";
 import GlowingEffect from "./GlowingEffect";
 
 const FeaturesItems = [
@@ -54,7 +54,7 @@ const FeatureSection = () => {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <motion.div className="my-10 w-full max-w-6xl mx-auto py-5 px-6 md:px-8">
+    <motion.div className="mt-10 w-full max-w-6xl mx-auto py-5 px-6 md:px-8">
       <h2 className="text-4xl font-extrabold tracking-tight mb-3 text-center text-neutral-600 dark:text-neutral-300">
         Features
       </h2>

@@ -1,23 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import NavBar from "./components/homeComponets/NavBar";
+import FooterSecction from "./components/homeComponets/FooterSecction";
 
 const App = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+  const location = useLocation();
+  const publicPaths = ["/", "/login", "/signup"];
+  const showLayout = publicPaths.includes(location.pathname);
 
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/", { replace: true });
-    }
-  }, [userInfo, navigate]);
   return (
     <div>
       <ToastContainer />
-      <Outlet />
+      {showLayout && <NavBar />}
+      <main className="bg-neutral-100 dark:bg-neutral-950 min-h-screen">
+        <Outlet />
+      </main>
+      {showLayout && <FooterSecction />}
     </div>
   );
 };

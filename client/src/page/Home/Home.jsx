@@ -7,12 +7,10 @@ import NavBar from "../../components/homeComponets/NavBar";
 const Home = () => {
   return (
     <div className="bg-neutral-100 dark:bg-neutral-950">
-      <NavBar />
       <Hero />
       <FeatureSection />
       {/* <AboutSection /> */}
       {/* <ContactSection /> */}
-      <FooterSecction />
     </div>
   );
 };

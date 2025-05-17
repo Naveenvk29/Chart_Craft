@@ -7,6 +7,8 @@ import {
 } from "motion/react";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import cn from "../../libs/utils";
+import { Link } from "react-router-dom";
+
 const NAV_ITEMS = [
   { name: "Feature", link: "#feature" },
   { name: "About", link: "#about" },
@@ -143,11 +145,11 @@ const NavBar = () => {
             }}
             className="text-sm font-semibold px-4 py-2 text-neutral-600 dark:text-neutral-300 whitespace-nowrap rounded-3xl"
           >
-            Sign In
+            <Link to="/login">Sign In</Link>
           </motion.button>
 
           <button className="text-sm font-semibold px-4 py-2 text-neutral-900 bg-neutral-200  whitespace-nowrap rounded-3xl">
-            Get Started
+            <Link to="/signup">Get Started</Link>
           </button>
         </div>
       </motion.div>
@@ -219,10 +221,10 @@ const NavBar = () => {
               </a>
             ))}
             <button className="w-full text-neutral-600 font-bold text-sm py-2 px-4 rounded-md bg-neutral-200 ">
-              Sign In
+              <Link to="/login">Sign in</Link>
             </button>
             <button className="w-full text-neutral-600 font-bold text-sm py-2 px-4 rounded-md bg-neutral-200 ">
-              Get Started
+              <Link to="/signup">Get Started</Link>
             </button>
           </motion.div>
         )}

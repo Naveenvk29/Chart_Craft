@@ -9,31 +9,28 @@ import cn from "../../libs/utils";
 import bg from "../../assets/dashboard.webp";
 import { useRef } from "react";
 import GlowingEffect from "./GlowingEffect";
-
+import { Link } from "react-router-dom";
 const Hero = () => {
   const ref = useRef(null);
 
-  // const { scrollYProgress } = useScroll({
-  //   target: ref,
-  //   offset: ["start end", "end start"],
-  // });
-  // const blur = useTransform(scrollYProgress, [0, 1], [0, 10]);
-  // useMotionValueEvent(scrollYProgress, "change", (v) => {
-  //   console.log("scrollYProgress", v);
-  // });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const blur = useTransform(scrollYProgress, [0.1, 0.2], [0, 2]);
   return (
-    <div
+    <motion.div
       ref={ref}
       className={cn(
         "relative  z-20 mx-auto mb-20 mt-20 max-w-7xl text-center font-semibold  text-neutral-300",
-        "text-4xl md:text-7xl"
+        "text-4xl md:text-7xl "
       )}
       // style={{ minHeight: "200vh" }}
     >
       <motion.h2
-        // style={{
-        //   filter: useMotionTemplate`blur(${blur}px)`,
-        // }}
+        style={{
+          filter: useMotionTemplate`blur(${blur}px)`,
+        }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -69,7 +66,7 @@ const Hero = () => {
             "shadow-[inset_0px_6px_8px_0px_#FAFAFA40,inset_0px_-6px_8px_0px_#FAFAFA40,0px_0px_4px_rgba(34,42,53,0.08)]"
           )}
         >
-          Get Started
+          <Link to="/signup">Get Started</Link>
         </button>
       </motion.div>
 
@@ -104,7 +101,7 @@ const Hero = () => {
           ></div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 

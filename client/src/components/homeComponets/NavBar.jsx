@@ -113,17 +113,17 @@ const NavBar = () => {
               }}
             >
               {darkMode ? (
-                <Moon
-                  aria-label="Enable light mode"
-                  onClick={toggletheme}
-                  className="cursor-pointer text-neutral-600 dark:bg-neutral-300"
-                  size={18}
-                />
-              ) : (
                 <Sun
                   aria-label="Enable dark mode"
                   onClick={toggletheme}
-                  // className="cursor-pointer text-neutral-600 dark:bg-neutral-300"
+                  className="cursor-pointer text-neutral-600 dark:text-neutral-300"
+                  size={18}
+                />
+              ) : (
+                <Moon
+                  aria-label="Enable light mode"
+                  onClick={toggletheme}
+                  className="cursor-pointer text-neutral-600 dark:text-neutral-300"
                   size={18}
                 />
               )}

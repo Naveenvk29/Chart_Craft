@@ -8,18 +8,19 @@ import {
 import cn from "../../libs/utils";
 import bg from "../../assets/dashboard.webp";
 import { useRef } from "react";
+import GlowingEffect from "./GlowingEffect";
 
 const Hero = () => {
   const ref = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const blur = useTransform(scrollYProgress, [0.01, 0.05], [0, 1]);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    console.log("scrollYProgress", v);
-  });
+  // const { scrollYProgress } = useScroll({
+  //   target: ref,
+  //   offset: ["start end", "end start"],
+  // });
+  // const blur = useTransform(scrollYProgress, [0, 1], [0, 10]);
+  // useMotionValueEvent(scrollYProgress, "change", (v) => {
+  //   console.log("scrollYProgress", v);
+  // });
   return (
     <div
       ref={ref}
@@ -27,15 +28,12 @@ const Hero = () => {
         "relative min-h-screen z-20 mx-auto mb-20 mt-20 max-w-7xl text-center font-semibold  text-neutral-300",
         "text-4xl md:text-7xl"
       )}
-      style={{ minHeight: "200vh" }}
+      // style={{ minHeight: "200vh" }}
     >
       <motion.h2
-        style={{
-          filter: useMotionTemplate`blur(${blur}px)`,
-
-          opacity: 1,
-          transform: "none",
-        }}
+        // style={{
+        //   filter: useMotionTemplate`blur(${blur}px)`,
+        // }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -81,14 +79,24 @@ const Hero = () => {
         transition={{ delay: 0.8, duration: 0.5 }}
         className="relative mx-auto w-full max-w-7xl p-2 backdrop-blur-lg md:p-4"
       >
+        <GlowingEffect
+          blur={10}
+          proximity={100}
+          spread={30}
+          glow={true}
+          variant="default"
+          movementDuration={1.5}
+          borderWidth={5}
+          disabled={false}
+        />
         <div className="rounded-lg relative overflow-hidden">
           <img
-            className="w-full h-auto rounded-lg"
+            className="w-full h-auto rounded-lg "
             src="https://cryptgen-template-aceternity.vercel.app/_next/image?url=%2Fdashboard.webp&w=1920&q=75"
             alt="Dashboard"
           />
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 "
             style={{
               background:
                 "linear-gradient(179.87deg, rgba(0, 0, 0, 0) 0.11%, rgba(0, 0, 0, 0.8) 69.48%, #000000 92.79%)",

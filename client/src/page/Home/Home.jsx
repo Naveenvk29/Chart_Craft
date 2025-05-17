@@ -9,7 +9,7 @@ const Home = () => {
     <div className="w-full min-h-screen bg-black">
       <NavBar />
       <Hero />
-      {/* <FeatureSection /> */}
+      <FeatureSection />
       {/* <AboutSection /> */}
       {/* <ContactSection /> */}
       {/* <FooterSecction /> */}

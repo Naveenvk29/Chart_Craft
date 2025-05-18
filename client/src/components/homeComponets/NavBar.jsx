@@ -16,10 +16,17 @@ const NAV_ITEMS = [
 ];
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(null);
 
   const toggletheme = () => {
-    setDarkMode(false);
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(null);

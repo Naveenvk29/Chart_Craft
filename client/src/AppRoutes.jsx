@@ -36,6 +36,7 @@ const AppRouter = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="" element={<App />}>
+        <Route path="*" element={<Navigate to="/" />} />
         <Route
           path="/"
           element={userInfo ? <Navigate to="/dashboard" /> : <Home />}

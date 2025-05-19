@@ -1,4 +1,4 @@
-import Header from "../../components/common/Header";
+// import Header from "../../components/common/Header";
 import { NavLink, Outlet } from "react-router-dom";
 import { LayoutDashboard } from "lucide-react";
 
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
          }`;
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="flex">
         <aside className="flex flex-col w-64 p-4 transition-all duration-300 bg-white text-black shadow-md h-[55rem] ">
           <nav className="flex flex-col gap-2 mt-8 space-y-6">

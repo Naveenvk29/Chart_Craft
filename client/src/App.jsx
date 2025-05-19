@@ -10,10 +10,10 @@ const App = () => {
   const showLayout = publicPaths.includes(location.pathname);
 
   return (
-    <div>
+    <div className="bg-neutral-100 dark:bg-neutral-950 min-h-screen">
       <ToastContainer />
       {showLayout && <NavBar />}
-      <main className="bg-neutral-100 dark:bg-neutral-950 min-h-screen">
+      <main>
         <Outlet />
       </main>
       {showLayout && <FooterSecction />}

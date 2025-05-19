@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   AnimatePresence,
   motion,
@@ -28,6 +28,18 @@ const NavBar = () => {
       document.documentElement.classList.remove("dark");
     }
   };
+  useEffect(() => {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setDarkMode(prefersDark);
+    if (prefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(null);
   const ref = useRef(null);
@@ -47,7 +59,7 @@ const NavBar = () => {
     <motion.div
       ref={ref}
       initial={false}
-      className=" sticky inset-x-0 top-0 z-[100] w-full bg-neutral-300 dark:bg-neutral-950"
+      className=" sticky inset-x-0 top-0 z-[100] w-full "
     >
       <motion.div
         animate={{

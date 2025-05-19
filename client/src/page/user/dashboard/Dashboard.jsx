@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { data: files, isLoading } = useFetchAllUserExcelFilesQuery();
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 text-black">
+    <div className="w-full min-h-screen  text-black">
       <div className="max-w-6xl mx-auto p-8  ">
         {/* Welcome + Stats */}
         <div className="mb-8">

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, animate } from "motion/react";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({
@@ -12,6 +12,29 @@ const Sidebar = ({
   logout,
 }) => {
   const [open, setOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(null);
+
+  const toggletheme = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+  useEffect(() => {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setDarkMode(prefersDark);
+    if (prefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   return (
     <div className="md:flex w-full h-screen bg-white dark:bg-neutral-950">
@@ -25,27 +48,69 @@ const Sidebar = ({
         className="hidden md:flex flex-col h-full p-5 bg-neutral-100 dark:bg-neutral-950 transition-all"
       >
         <div className="flex flex-col  h-full space-y-20">
-          <Link
-            to="/"
-            className="flex items-center space-x-2 text-sm text-black dark:text-white"
-          >
-            {!open && (
-              <h2 className="text-md font-bold animate-pulse duration-300 ease-initial">
-                Craft
-              </h2>
-            )}
+          <div className="flex justify-between">
+            <Link
+              to="/"
+              className="flex items-center space-x-2 text-sm text-black dark:text-white"
+            >
+              {!open && (
+                <h2 className="text-md font-bold animate-pulse duration-300 ease-initial">
+                  Craft
+                </h2>
+              )}
 
+              {open && (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, bounceDamping: 10 }}
+                  className="font-medium"
+                >
+                  {title}
+                </motion.span>
+              )}
+            </Link>
             {open && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, bounceDamping: 10 }}
-                className="font-medium"
-              >
-                {title}
-              </motion.span>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={darkMode ? "moon" : "sun"}
+                  initial={{
+                    rotate: 90,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    rotate: 0,
+                    opacity: 1,
+                  }}
+                  exit={{
+                    rotate: 90,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  }}
+                >
+                  {darkMode ? (
+                    <Sun
+                      aria-label="Enable dark mode"
+                      onClick={toggletheme}
+                      className="cursor-pointer text-neutral-600 dark:text-neutral-300"
+                      size={20}
+                    />
+                  ) : (
+                    <Moon
+                      aria-label="Enable light mode"
+                      onClick={toggletheme}
+                      className="cursor-pointer text-neutral-600 dark:text-neutral-300"
+                      size={20}
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
             )}
-          </Link>
+          </div>
+
           <div className="flex flex-col space-y-4">
             {links.map((link, idx) => (
               <Link
@@ -177,7 +242,7 @@ const Sidebar = ({
       </AnimatePresence>
 
       <div className=" flex flex-1">
-        <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
+        <div className="flex rounded-tl-2xl flex-1 flex-col gap-2 border border-neutral-200 bg-white  dark:border-neutral-700 dark:bg-neutral-900 overflow-auto mt-2">
           {children}
         </div>
       </div>

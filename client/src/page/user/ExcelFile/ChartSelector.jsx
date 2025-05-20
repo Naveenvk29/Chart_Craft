@@ -13,6 +13,8 @@ import {
   ArcElement,
   RadialLinearScale,
 } from "chart.js";
+import html2canvas from "html2canvas";
+import { motion } from "motion/react";
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +28,15 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-import html2canvas from "html2canvas";
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay, duration: 0.5 },
+  }),
+};
 
 const ChartSelector = ({ data }) => {
   const [chartType, setChartType] = useState("bar");
@@ -62,20 +72,36 @@ const ChartSelector = ({ data }) => {
       },
     ],
   };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // allow container to control height
+    plugins: {
+      legend: {
+        labels: {
+          color: "#fff", // for dark mode text
+        },
+      },
+      background: {
+        color: "#ffffff", // white canvas background
+      },
+    },
+  };
+
   const renderChart = () => {
     switch (chartType) {
       case "bar":
-        return <Bar data={chartData} />;
+        return <Bar data={chartData} options={chartOptions} />;
       case "line":
-        return <Line data={chartData} />;
+        return <Line data={chartData} options={chartOptions} />;
       case "pie":
-        return <Pie data={chartData} />;
+        return <Pie data={chartData} options={chartOptions} />;
       case "doughnut":
-        return <Doughnut data={chartData} />;
+        return <Doughnut data={chartData} options={chartOptions} />;
       case "polarArea":
-        return <PolarArea data={chartData} />;
+        return <PolarArea data={chartData} options={chartOptions} />;
       default:
-        return <Bar data={chartData} />;
+        return <Bar data={chartData} options={chartOptions} />;
     }
   };
 
@@ -89,15 +115,31 @@ const ChartSelector = ({ data }) => {
   };
 
   return (
-    <div className="w-full mt-14 ">
-      <h1>2d graph</h1>
-      <div className="flex justify-center items-center space-x-10 mb-10">
-        <div className="space-x-2">
-          <label>Chart Type:</label>
+    <motion.div
+      className="w-full mt-14 px-4 md:px-10"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+    >
+      <motion.h2
+        className="text-xl font-semibold text-center mb-8"
+        variants={fadeIn}
+        custom={0.1}
+      >
+        2D Chart Visualization
+      </motion.h2>
+
+      <motion.div
+        className="flex flex-col lg:flex-row items-center justify-center gap-4 mb-10"
+        variants={fadeIn}
+        custom={0.2}
+      >
+        <div>
+          <label className="block text-sm font-medium mb-1">Chart Type:</label>
           <select
             value={chartType}
             onChange={(e) => setChartType(e.target.value)}
-            className=""
+            className="border rounded p-2 dark:bg-neutral-800"
           >
             <option value="bar">Bar</option>
             <option value="line">Line</option>
@@ -106,51 +148,70 @@ const ChartSelector = ({ data }) => {
             <option value="polarArea">PolarArea</option>
           </select>
         </div>
-        <div className="space-x-2">
-          <label>X-Axis:</label>
-          <select value={xField} onChange={(e) => setXField(e.target.value)}>
+        <div>
+          <label className="block text-sm font-medium mb-1">X-Axis:</label>
+          <select
+            value={xField}
+            onChange={(e) => setXField(e.target.value)}
+            className="border rounded p-2 dark:bg-neutral-800"
+          >
             <option value="">Select X-axis</option>
             {fields.map((field) => (
-              <option key={field} value={field} className="">
+              <option key={field} value={field}>
                 {field}
               </option>
             ))}
           </select>
         </div>
-        <div className="space-x-2">
-          <label>Y-Axis:</label>
-          <select value={yField} onChange={(e) => setYField(e.target.value)}>
+        <div>
+          <label className="block text-sm font-medium mb-1">Y-Axis:</label>
+          <select
+            value={yField}
+            onChange={(e) => setYField(e.target.value)}
+            className="border rounded p-2 dark:bg-neutral-800"
+          >
             <option value="">Select Y-axis</option>
             {fields.map((field) => (
-              <option key={field} value={field} className="">
+              <option key={field} value={field}>
                 {field}
               </option>
             ))}
           </select>
         </div>
-      </div>
+      </motion.div>
+
       {xField && yField && (
         <>
-          <div className="mt-4 flex gap-4 justify-end ">
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-end items-end mb-4"
+            variants={fadeIn}
+            custom={0.3}
+          >
             <button
               onClick={() => downloadImage("png")}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
             >
               Download PNG
             </button>
             <button
               onClick={() => downloadImage("jpeg")}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
             >
               Download JPG
             </button>
-          </div>
-          <div id="chart-container" className="mt-6 h-160 flex justify-center ">
-            {renderChart()}
-          </div>
+          </motion.div>
+
+          <motion.div
+            id="chart-container"
+            className="mt-6 w-full max-w-4xl mx-auto px-4 sm:px-6"
+            variants={fadeIn}
+            custom={0.4}
+          >
+            <div className="relative w-full h-[400px]">{renderChart()}</div>
+          </motion.div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

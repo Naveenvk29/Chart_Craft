@@ -2,7 +2,7 @@ import FileUpload from "./Fileupload";
 
 const ExcelFile = () => {
   return (
-    <div className=" w-full min-h-full bg-white text-black">
+    <div className="w-full h-full  text-black bg-neutral-100 dark:bg-neutral-900">
       <FileUpload />
     </div>
   );

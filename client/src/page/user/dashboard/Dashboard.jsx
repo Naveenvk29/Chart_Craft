@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { data: files, isLoading } = useFetchAllUserExcelFilesQuery();
 
   return (
-    <div className="w-full min-h-screen  text-black">
+    <div className="w-full h-full  text-black">
       <div className="max-w-6xl mx-auto p-8  ">
         {/* Welcome + Stats */}
         <div className="mb-8">
@@ -46,9 +46,9 @@ const Dashboard = () => {
             <p>Loading...</p>
           ) : files && files.length > 0 ? (
             <ul className="divide-y divide-gray-200">
-              {files.map((file) => (
+              {files.map((file, idx) => (
                 <li
-                  key={file.id}
+                  key={idx}
                   className="py-4 flex justify-between items-center"
                 >
                   <div>

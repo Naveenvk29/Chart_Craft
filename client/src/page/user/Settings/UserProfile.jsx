@@ -6,6 +6,7 @@ import {
 import testpp from "../../../assets/pp.jpg";
 import EditProfileModal from "../../../components/userModal/EditProfileModal";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const UserProfile = () => {
   const { data: userDetails, error, isLoading } = useGetProfileQuery();
@@ -25,7 +26,12 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white p-6 rounded-md shadow-md">
+    <motion.div
+      className="w-full max-w-4xl mx-auto bg-neutral-50 dark:bg-neutral-800 text-black dark:text-white p-6 rounded-md shadow-md"
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <h1 className="text-2xl font-bold mb-6 border-b pb-2">User Profile</h1>
 
       {isLoading && <p>Loading...</p>}
@@ -33,21 +39,21 @@ const UserProfile = () => {
 
       {userDetails && (
         <>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-6">
+            <div className="flex flex-col md:flex-row items-center gap-4">
               <img
                 src={profilePicture}
-                alt="Profile Picture"
-                className="h-32 w-32 rounded-full border-2 border-gray-300 hover:scale-105 transition-transform duration-300"
+                alt="Profile"
+                className="h-28 w-28 rounded-full border-2 border-gray-300 hover:scale-105 transition-transform duration-300"
               />
-              <div className="flex flex-col space-y-1">
-                <h2 className="text-3xl font-semibold ">
+              <div className="text-center md:text-left space-y-1">
+                <h2 className="text-2xl font-semibold">
                   {userDetails.user.username}
                 </h2>
-                <p className="text-gray-600 font-medium">
+                <p className="text-gray-600 dark:text-gray-300 font-medium">
                   {userDetails.user.email}
                 </p>
-                <p className="text-center font-medium bg-blue-500 text-white px-2 py-1 rounded-full">
+                <p className="text-sm font-medium bg-blue-500 text-white px-2 py-1 rounded-full inline-block">
                   {userDetails.user.role}
                 </p>
               </div>
@@ -67,9 +73,9 @@ const UserProfile = () => {
             onSave={handleSave}
           />
 
-          <hr />
+          <hr className="my-4" />
 
-          <div className="mt-5 flex justify-between items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <div>
                 <span className="font-semibold">Name:</span>{" "}
@@ -93,7 +99,7 @@ const UserProfile = () => {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

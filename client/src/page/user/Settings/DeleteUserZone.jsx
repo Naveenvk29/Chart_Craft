@@ -7,7 +7,8 @@ import { logout } from "../../../redux/features/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import ConfirmModal from "../../../components/userModal/ConfirmModal"; // 👈 import it
+import ConfirmModal from "../../../components/userModal/ConfirmModal";
+import { motion } from "framer-motion";
 
 const DeleteUserZone = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,9 +31,15 @@ const DeleteUserZone = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mt-5 mx-auto h-full bg-white text-black py-5 px-8 shadow-md rounded-md">
+    <motion.div
+      className="w-full max-w-4xl mt-5 mx-auto bg-neutral-50 dark:bg-neutral-800 text-black dark:text-white py-5 px-6 sm:px-8 shadow-md rounded-md"
+      initial={{ y: 20, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
       <h2 className="text-2xl font-bold">Delete Account</h2>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-600 dark:text-gray-400">
         Are you sure you want to delete your account? This action cannot be
         undone.
       </p>
@@ -43,7 +50,6 @@ const DeleteUserZone = () => {
         Delete Account
       </button>
 
-      {/* ✅ Reusable Modal Component */}
       <ConfirmModal
         isOpen={isModalOpen}
         title="Confirm Account Deletion"
@@ -54,7 +60,7 @@ const DeleteUserZone = () => {
         onCancel={() => setIsModalOpen(false)}
         onConfirm={handleUserDelete}
       />
-    </div>
+    </motion.div>
   );
 };
 

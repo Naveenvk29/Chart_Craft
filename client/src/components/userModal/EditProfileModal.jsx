@@ -13,8 +13,8 @@ const EditProfileModal = ({ user, isOpen, onClose, onSave }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70  flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-md w-full max-w-md shadow-lg">
+    <div className="fixed inset-0 bg-neutral-950/70    flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-md w-full max-w-md shadow-lg dark:bg-neutral-800">
         <h2 className="text-xl font-bold mb-4 text-center ">Edit Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -41,7 +41,7 @@ const EditProfileModal = ({ user, isOpen, onClose, onSave }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 rounded"
+              className="px-4 py-2 bg-gray-300 rounded text-neutral-700"
             >
               Cancel
             </button>

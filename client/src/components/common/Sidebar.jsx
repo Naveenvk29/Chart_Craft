@@ -42,10 +42,10 @@ const Sidebar = ({
         animate={{
           width: animate ? (open ? "300px" : "60px") : "300px",
         }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
-        className="hidden md:flex flex-col h-full p-5 bg-neutral-100 dark:bg-neutral-950 transition-all"
+        className="hidden md:flex flex-col h-full p-3 bg-neutral-100 dark:bg-neutral-950 transition-all"
       >
         <div className="flex flex-col  h-full space-y-20">
           <div className="flex justify-between">

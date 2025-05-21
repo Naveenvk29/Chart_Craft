@@ -241,8 +241,8 @@ const Sidebar = ({
         )}
       </AnimatePresence>
 
-      <div className=" flex flex-1">
-        <div className="flex rounded-tl-2xl flex-1 flex-col gap-2 border border-neutral-200 bg-white  dark:border-neutral-700 dark:bg-neutral-900 overflow-auto mt-2">
+      <div className=" flex flex-1 h-screen bg-white dark:bg-neutral-950">
+        <div className="flex rounded-tl-4xl flex-1 flex-col gap-2 border border-neutral-200 bg-white  dark:border-neutral-700 dark:bg-neutral-900 overflow-auto ">
           {children}
         </div>
       </div>

@@ -4,6 +4,7 @@ import {
   Activity,
   FileBarChart,
   Settings,
+  LucideUserSquare2,
 } from "lucide-react";
 import Sidebar from "../../../components/common/Sidebar";
 import bg from "../../../assets/pp.jpg";
@@ -14,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const UserDashboard = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const navItems = [
     {
       path: "/dashboard",
@@ -44,8 +47,15 @@ const UserDashboard = () => {
       ),
     },
   ];
-
-  const { userInfo } = useSelector((state) => state.auth);
+  if (userInfo?.user?.role === "admin") {
+    navItems.push({
+      path: "/admin",
+      label: "Admin Dashboard",
+      icon: (
+        <LucideUserSquare2 className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
+    });
+  }
   const [logoutApi] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

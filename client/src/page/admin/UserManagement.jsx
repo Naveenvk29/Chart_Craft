@@ -55,7 +55,7 @@ const UserManagement = () => {
   if (isLoading) return <p>Loading users...</p>;
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="p-4 sm:p-6 ">
       <h2 className="text-lg sm:text-xl font-bold mb-4">User Management</h2>
 
       <div className="overflow-x-auto">

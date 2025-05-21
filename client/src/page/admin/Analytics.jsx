@@ -56,7 +56,7 @@ const Analytics = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 h-full">
       <h2 className="text-xl font-bold mb-4">Analytics</h2>
 
       <div className="grid grid-cols-3 gap-4 mb-6">

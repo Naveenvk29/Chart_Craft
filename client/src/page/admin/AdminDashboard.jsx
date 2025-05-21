@@ -1,69 +1,96 @@
-// import Header from "../../components/common/Header";
-import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
+import { Outlet, useNavigate } from "react-router-dom";
+import {
+  Activity,
+  ChartColumnIcon,
+  LayoutDashboard,
+  LogOut,
+  UserCog,
+  UsersRound,
+  ArrowLeftCircle,
+} from "lucide-react";
+import Sidebar from "../../components/common/Sidebar";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../redux/api/usersApi";
+import { logout } from "../../redux/features/authSlice";
+import { toast } from "react-toastify";
+import bg from "../../assets/pp.jpg";
 
 const AdminDashboard = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const [logoutApi] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logoutApi().unwrap();
+      dispatch(logout());
+      toast.success("👋 Logged out successfully");
+      navigate("/login");
+    } catch (err) {
+      toast.error(err?.data?.message || "Logout failed");
+    }
+  };
+
+  const bg = "";
+
   const navItems = [
     {
       path: "/admin",
       label: "Admin Dashboard",
-      icon: LayoutDashboard,
+      icon: (
+        <LayoutDashboard className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
     {
-      path: "user-management",
+      path: "/admin/user-management",
       label: "User Management",
-      icon: LayoutDashboard,
+      icon: (
+        <UserCog className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
     {
-      path: "role-management",
+      path: "/admin/role-management",
       label: "Role Management",
-      icon: LayoutDashboard,
+      icon: (
+        <UsersRound className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
     {
-      path: "analytics",
+      path: "/admin/analytics",
       label: "Analytics",
-      icon: LayoutDashboard,
+      icon: (
+        <ChartColumnIcon className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
     {
-      path: "user-activity",
+      path: "/admin/user-activity",
       label: "User Activity",
-      icon: LayoutDashboard,
+      icon: (
+        <Activity className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    // Back to user dashboard
+    {
+      label: "Back to User Dashboard",
+      path: "/",
+      icon: (
+        <ArrowLeftCircle className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
     },
   ];
 
-  const navLinkStyle = ({ isActive }) =>
-    `flex items-center space-x-5
-         px-4 py-2 rounded-lg transition-all duration-200 text-lg font-medium  ${
-           isActive
-             ? "bg-indigo-600 text-white"
-             : "text-gray-700 hover:bg-indigo-100  "
-         }`;
   return (
-    <div>
-      {/* <Header /> */}
-      <div className="flex">
-        <aside className="flex flex-col w-64 p-4 transition-all duration-300 bg-white text-black shadow-md h-[55rem] ">
-          <nav className="flex flex-col gap-2 mt-8 space-y-6">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={navLinkStyle}
-                >
-                  <Icon size={24} />
-                  <span className="whitespace-nowrap">{item.label}</span>
-                </NavLink>
-              );
-            })}
-          </nav>
-        </aside>
-        <main className="flex-1 ">
-          <Outlet />
-        </main>
+    <Sidebar
+      title="Chart Craft"
+      avatarUrl={bg || userInfo}
+      userName={userInfo?.user?.username || "Admin"}
+      links={navItems}
+      logout={handleLogout}
+    >
+      <div className="w-full h-full">
+        <Outlet />
       </div>
-    </div>
+    </Sidebar>
   );
 };
 

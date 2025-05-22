@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useSessionTrackerMutation } from "../../redux/api/usersApi";
-import { useSelector } from "react-redux";
 
 const useSessionTracker = (userId) => {
   const [session] = useSessionTrackerMutation();
@@ -14,7 +13,7 @@ const useSessionTracker = (userId) => {
       try {
         await session({ duration });
       } catch (err) {
-        console.error("Failed to report session duration:", err);
+        console.error("❌ Failed to report session duration:", err);
       }
     };
 

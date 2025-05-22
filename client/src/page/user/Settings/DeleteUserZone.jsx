@@ -59,6 +59,7 @@ const DeleteUserZone = () => {
         isLoading={isDeleting}
         onCancel={() => setIsModalOpen(false)}
         onConfirm={handleUserDelete}
+        onClose={() => setIsModalOpen(false)}
       />
     </motion.div>
   );

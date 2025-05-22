@@ -11,7 +11,9 @@ const App = () => {
   const publicPaths = ["/", "/login", "/signup"];
   const showLayout = publicPaths.includes(location.pathname);
   const { userInfo } = useSelector((state) => state.auth);
-  useSessionTracker(userInfo?.id);
+  const userId = userInfo?.user?._id || userInfo?._id;
+  useSessionTracker(userId);
+
   return (
     <div className="bg-neutral-100 dark:bg-neutral-950 min-h-screen">
       <ToastContainer />

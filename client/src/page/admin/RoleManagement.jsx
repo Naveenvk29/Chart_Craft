@@ -29,21 +29,22 @@ const RoleManagement = () => {
     setSelectedUser(null);
     setIsModalOpen(false);
   };
-
-  const handleRoleChange = async () => {
+  const handleConfirmRoleChange = async () => {
+    if (!selectedUser?._id || !newRole) {
+      console.error("Invalid user or role data");
+      return;
+    }
     try {
-      setIsUpdating(true);
       await modifyUserRole({
-        userId: selectedUser._id,
-        role: newRole,
+        id: selectedUser._id,
+        userData: { role: newRole },
       }).unwrap();
-      toast.success("User role updated");
+
+      toast.success(`Role updated for ${selectedUser.username}`);
       closeModal();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update role");
-    } finally {
-      setIsUpdating(false);
+    } catch (err) {
+      console.error("Role update failed", err);
+      toast.error("Failed to update role.");
     }
   };
 
@@ -114,7 +115,7 @@ const RoleManagement = () => {
             user={selectedUser}
             isOpen={isModalOpen}
             onClose={closeModal}
-            onConfirm={handleRoleChange}
+            onConfirm={handleConfirmRoleChange}
             isLoading={isUpdating}
             newRole={newRole}
             setNewRole={setNewRole}

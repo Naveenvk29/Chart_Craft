@@ -23,6 +23,13 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    totalTimeSpent: {
+      type: Number,
+      default: 0,
+    },
+    lastActiveAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

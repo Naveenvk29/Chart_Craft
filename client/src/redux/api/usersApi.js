@@ -68,6 +68,15 @@ const usersApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    SessionTracker: builder.mutation({
+      query: (duration) => ({
+        url: `${USER_URL}/session`,
+        method: "POST",
+        body: duration,
+        credentials: "include",
+      }),
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -80,4 +89,5 @@ export const {
   useDeleteProfileMutation,
   useOauthLoginUserMutation,
   useChangePasswordMutation,
+  useSessionTrackerMutation,
 } = usersApi;

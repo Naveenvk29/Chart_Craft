@@ -285,6 +285,24 @@ const oauthLoginUser = asyncHandler(async (req, res) => {
   }
 });
 
+const updateSessionTime = asyncHandler(async (req, res) => {
+  const { duration } = req.body;
+  const userId = req.user._id;
+  if (!userId || !duration) {
+    return res.status(400).json({ message: "userId and duration required" });
+  }
+
+  const user = await User.findById(userId).select("-password");
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  user.totalTimeSpent = (user.totalTimeSpent || 0) + duration;
+  user.lastActiveAt = new Date();
+
+  await user.save();
+
+  res.status(200).json({ message: "Session updated", user });
+});
+
 export {
   registerUser,
   loginUser,
@@ -294,4 +312,5 @@ export {
   changePasswordCurrentUser,
   deleteCurrentUser,
   oauthLoginUser,
+  updateSessionTime,
 };

@@ -8,6 +8,7 @@ import {
   changePasswordCurrentUser,
   deleteCurrentUser,
   oauthLoginUser,
+  updateSessionTime,
 } from "../Controllers/usersControllers.js";
 import { isAuthenticated } from "../Middlewares/authMiddleware.js";
 
@@ -25,5 +26,7 @@ router
   .put(isAuthenticated, updateCurrentUserProfile)
   .delete(isAuthenticated, deleteCurrentUser)
   .patch(isAuthenticated, changePasswordCurrentUser);
+
+router.post("/session", isAuthenticated, updateSessionTime);
 
 export default router;

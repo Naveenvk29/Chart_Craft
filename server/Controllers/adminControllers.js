@@ -101,25 +101,134 @@ const removeAnyUserExcelFile = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Excel file deleted" });
 });
 
+const getPeriodStart = (period) => {
+  const now = new Date();
+  switch (period) {
+    case "day":
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    case "week": {
+      const day = now.getDay(); // 0 (Sun) - 6 (Sat)
+      const diff = now.getDate() - day + (day === 0 ? -6 : 1); // start on Monday
+      return new Date(now.setDate(diff));
+    }
+    case "month":
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    case "year":
+      return new Date(now.getFullYear(), 0, 1);
+    default:
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+};
+
 const viewAnalytics = asyncHandler(async (req, res) => {
+  const { period = "week" } = req.query;
+
+  // Count totals
   const usersCount = await User.countDocuments();
   const adminsCount = await User.countDocuments({ role: "admin" });
   const normalUsersCount = await User.countDocuments({ role: "user" });
 
+  // Count files
   const filesCount = await ExcelFile.countDocuments();
+
+  // Latest 5 uploads (without file data)
   const latestUploads = await ExcelFile.find()
     .sort({ createdAt: -1 })
     .limit(5)
-    .populate("user", "username email");
+    .populate("user", "username email")
+    .select("-data");
 
+  // Get all users for session data
+  const users = await User.find(
+    {},
+    "username email totalTimeSpent lastActiveAt"
+  ).sort({ totalTimeSpent: -1 });
+
+  // Total and average session time
+  const totalSessionTime = users.reduce(
+    (acc, u) => acc + (u.totalTimeSpent || 0),
+    0
+  );
+  const averageSessionTime =
+    users.length > 0 ? totalSessionTime / users.length : 0;
+
+  // Active users: last 5 minutes
+  const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+  const activeUsers = await User.countDocuments({
+    lastActiveAt: { $gte: fiveMinAgo },
+  });
+
+  // Most active user (top of sorted list)
+  const mostActiveUser =
+    users.length > 0
+      ? {
+          username: users[0].username,
+          email: users[0].email,
+          totalTimeSpent: users[0].totalTimeSpent,
+        }
+      : null;
+
+  // Set aggregation period
+  const fromDate = getPeriodStart(period);
+  let dateFormat;
+  switch (period) {
+    case "day":
+      dateFormat = "%Y-%m-%d";
+      break;
+    case "week":
+      dateFormat = "%Y-%U";
+      break;
+    case "month":
+      dateFormat = "%Y-%m";
+      break;
+    case "year":
+      dateFormat = "%Y";
+      break;
+  }
+
+  // Generate session trend data
+  const sessionTrends = await User.aggregate([
+    {
+      $match: { lastActiveAt: { $gte: fromDate } },
+    },
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: dateFormat, date: "$lastActiveAt" },
+        },
+        totalTimeSpent: { $sum: "$totalTimeSpent" },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+    {
+      $project: {
+        _id: 0,
+        date: "$_id",
+        totalTimeSpent: 1,
+      },
+    },
+  ]);
+
+  // Send final response
   res.status(200).json({
     totalUsers: usersCount,
     admins: adminsCount,
     normalUsers: normalUsersCount,
     totalFiles: filesCount,
     recentUploads: latestUploads,
+    averageSessionTime,
+    activeUsers,
+    mostActiveUser,
+    userSessions: users.map((user) => ({
+      username: user.username,
+      totalTimeSpent: user.totalTimeSpent,
+    })),
+    sessionTrends,
   });
 });
+
 //⬇️
 
 const monitorUserActivity = asyncHandler(async (req, res) => {

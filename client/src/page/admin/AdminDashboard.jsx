@@ -42,20 +42,6 @@ const AdminDashboard = () => {
       ),
     },
     {
-      path: "/admin/user-management",
-      label: "User Management",
-      icon: (
-        <UserCog className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      path: "/admin/role-management",
-      label: "Role Management",
-      icon: (
-        <UsersRound className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
       path: "/admin/analytics",
       label: "Analytics",
       icon: (
@@ -69,6 +55,21 @@ const AdminDashboard = () => {
         <Activity className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
       ),
     },
+    {
+      path: "/admin/user-management",
+      label: "User Management",
+      icon: (
+        <UserCog className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      path: "/admin/role-management",
+      label: "Role Management",
+      icon: (
+        <UsersRound className="h-7 w-7 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+
     // Back to user dashboard
     {
       label: "Back to User Dashboard",

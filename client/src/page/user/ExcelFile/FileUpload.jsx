@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useUploadExcelFileMutation } from "../../../redux/api/excelApi";
 import ChartSelector from "./ChartSelector";
 import ThreeChartSelector from "./threeChartSelector";
+import SmartAnalytics from "./SmartAnalytics";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -252,6 +253,7 @@ const FileUpload = () => {
             >
               <ChartSelector data={excelData} />
               <ThreeChartSelector data={excelData} />
+              <SmartAnalytics data={excelData} />
               <div className="flex justify-center mt-6 space-x-6">
                 <motion.button
                   onClick={handleSave}

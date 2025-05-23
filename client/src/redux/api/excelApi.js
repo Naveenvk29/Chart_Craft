@@ -1,4 +1,4 @@
-import { EXCELS_FILE_URL } from "../constants";
+import { AI_INSIGHTS, EXCELS_FILE_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 const excelsApi = apiSlice.injectEndpoints({
@@ -34,6 +34,14 @@ const excelsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["ExcelFile"],
     }),
+    aiInsights: builder.mutation({
+      query: ({ data, type }) => ({
+        url: `${AI_INSIGHTS}/ai-insights`,
+        method: "POST",
+        body: { data, type },
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -42,4 +50,5 @@ export const {
   useFetchAllUserExcelFilesQuery,
   useFetchExcelFileByIdQuery,
   useRemoveExcelFileMutation,
+  useAiInsightsMutation,
 } = excelsApi;

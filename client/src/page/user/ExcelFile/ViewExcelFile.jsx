@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ChartSelector from "./ChartSelector";
 import { motion } from "framer-motion";
 import ThreeChartSelector from "./threeChartSelector";
+import SmartAnalytics from "./SmartAnalytics";
 
 const ViewExcelFile = () => {
   const { id } = useParams();
@@ -66,6 +67,7 @@ const ViewExcelFile = () => {
         >
           <ChartSelector data={fileData.data} />
           <ThreeChartSelector data={fileData.data} />
+          <SmartAnalytics data={fileData.data} />
         </motion.div>
       )}
     </motion.div>

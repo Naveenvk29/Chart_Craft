@@ -28,7 +28,6 @@ ChartJS.register(
 const Analytics = () => {
   const [period, setPeriod] = useState("week");
   const { data, isLoading, isError } = useViewAnalyticsQuery({ period });
-  console.log(data);
 
   if (isLoading)
     return (

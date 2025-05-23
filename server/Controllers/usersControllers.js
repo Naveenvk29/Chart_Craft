@@ -49,6 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        totalTimeSpent: user.totalTimeSpent,
       },
     });
   } catch (error) {
@@ -95,6 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
           username: user.username,
           email: user.email,
           role: user.role,
+          totalTimeSpent: user.totalTimeSpent,
         },
       });
     } else {

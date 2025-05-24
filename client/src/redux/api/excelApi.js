@@ -34,9 +34,9 @@ const excelsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["ExcelFile"],
     }),
-    aiInsights: builder.mutation({
+    smartanalytics: builder.mutation({
       query: ({ data, type }) => ({
-        url: `${AI_INSIGHTS}/ai-insights`,
+        url: `${AI_INSIGHTS}/smartanalytics`,
         method: "POST",
         body: { data, type },
         credentials: "include",
@@ -50,5 +50,5 @@ export const {
   useFetchAllUserExcelFilesQuery,
   useFetchExcelFileByIdQuery,
   useRemoveExcelFileMutation,
-  useAiInsightsMutation,
+  useSmartanalyticsMutation,
 } = excelsApi;

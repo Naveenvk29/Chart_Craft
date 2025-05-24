@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { useAiInsightsMutation } from "../../../redux/api/excelApi";
+import { useSmartanalyticsMutation } from "../../../redux/api/excelApi";
 
 const InsightCard = ({ title, content }) => (
   <div className="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg shadow mt-4 w-full max-w-3xl">
@@ -18,12 +18,21 @@ const SmartAnalytics = ({ data }) => {
   const [aiTrends, setAiTrends] = useState("");
   const [aiChartSuggestion, setAiChartSuggestion] = useState("");
   const [loading, setLoading] = useState("");
-  const [triggerInsights] = useAiInsightsMutation();
+  const [triggerInsights] = useSmartanalyticsMutation();
+  console.log(data);
 
+  const convertToCSV = (jsonArray) => {
+    const headers = Object.keys(jsonArray[0]).join(",");
+    const rows = jsonArray.map((obj) => Object.values(obj).join(","));
+    return [headers, ...rows].join("\n");
+  };
+
+  const csv = convertToCSV(data);
+  console.log(csv);
   const callAI = async (type, setter) => {
     try {
       setLoading(type);
-      const res = await triggerInsights({ data, type }).unwrap();
+      const res = await triggerInsights({ data: csv, type }).unwrap();
       setter(res.result);
     } catch (err) {
       setter("⚠️ Failed to get AI insights.");

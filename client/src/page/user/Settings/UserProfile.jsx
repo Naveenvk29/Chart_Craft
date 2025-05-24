@@ -7,13 +7,25 @@ import testpp from "../../../assets/pp.jpg";
 import EditProfileModal from "../../../components/userModal/EditProfileModal";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-
+import EditProfiePicModal from "../../../components/userModal/EditProfiePicModal";
 const UserProfile = () => {
   const { data: userDetails, error, isLoading } = useGetProfileQuery();
-  const profilePicture = userDetails?.user.profilePicture || testpp;
+  const profilePicture = userDetails.user.profilePic?.url || testpp;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const [isPicModalOpen, setIsPicModalOpen] = useState(false);
 
+  const handlePicUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("profilePic", file);
+    try {
+      await updateProfile(formData).unwrap();
+      toast.success("Profile picture updated");
+      setIsPicModalOpen(false);
+    } catch (err) {
+      toast.error("Failed to upload profile picture");
+    }
+  };
   const handleSave = async (updatedData) => {
     try {
       await updateProfile(updatedData).unwrap();
@@ -41,11 +53,20 @@ const UserProfile = () => {
         <>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-6">
             <div className="flex flex-col md:flex-row items-center gap-4">
-              <img
-                src={profilePicture}
-                alt="Profile"
-                className="h-28 w-28 rounded-full border-2 border-gray-300 hover:scale-105 transition-transform duration-300"
-              />
+              <div className="relative">
+                <img
+                  src={profilePicture}
+                  alt="Profile"
+                  className="h-28 w-28 rounded-full border-2 border-gray-300 hover:scale-105 transition-transform duration-300 cursor-pointer"
+                  onClick={() => setIsPicModalOpen(true)}
+                />
+                <EditProfiePicModal
+                  user={userDetails.user}
+                  isOpen={isPicModalOpen}
+                  onClose={() => setIsPicModalOpen(false)}
+                  onUpload={handlePicUpload}
+                />
+              </div>
               <div className="text-center md:text-left space-y-1">
                 <h2 className="text-2xl font-semibold">
                   {userDetails.user.username}

@@ -31,8 +31,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const bg = "";
-
   const navItems = [
     {
       path: "/admin",
@@ -83,7 +81,7 @@ const AdminDashboard = () => {
   return (
     <Sidebar
       title="Chart Craft"
-      avatarUrl={bg || userInfo}
+      avatarUrl={userInfo.user.profilePic?.url || bg}
       userName={userInfo?.user?.username || "Admin"}
       links={navItems}
       logout={handleLogout}

@@ -11,6 +11,7 @@ import {
   updateSessionTime,
 } from "../Controllers/usersControllers.js";
 import { isAuthenticated } from "../Middlewares/authMiddleware.js";
+import { uploadImage } from "../Middlewares/multerImageMiddleware.js";
 
 const router = Router();
 
@@ -23,7 +24,11 @@ router.post("/oauth-login", oauthLoginUser);
 router
   .route("/profile")
   .get(isAuthenticated, getCurrentUserProfile)
-  .put(isAuthenticated, updateCurrentUserProfile)
+  .put(
+    uploadImage.single("profilePic"),
+    isAuthenticated,
+    updateCurrentUserProfile
+  )
   .delete(isAuthenticated, deleteCurrentUser)
   .patch(isAuthenticated, changePasswordCurrentUser);
 

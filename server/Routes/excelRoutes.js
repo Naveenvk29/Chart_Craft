@@ -6,7 +6,7 @@ import {
   removeExcelFile,
 } from "../Controllers/excelControllers.js";
 import { isAuthenticated } from "../Middlewares/authMiddleware.js";
-import { upload } from "../Middlewares/MulterMiddleware.js";
+import { upload } from "../Middlewares/multerExcelMiddleware.js";
 
 const router = Router();
 

@@ -105,7 +105,7 @@ const History = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="my-3 p-4 border border-gray-200 rounded-md shadow-sm flex flex-col  sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition"
+                className="my-3 p-4 border border-gray-200 rounded-md shadow-sm flex flex-col  sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition dark:bg-neutral-700/70"
               >
                 <div className=" space-y-3">
                   <h3 className="font-semibold text-lg">{file.originalName}</h3>

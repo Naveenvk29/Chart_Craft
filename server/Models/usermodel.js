@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -29,6 +29,14 @@ const userSchema = new mongoose.Schema(
     },
     lastActiveAt: {
       type: Date,
+    },
+    profilePic: {
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
     },
   },
   {

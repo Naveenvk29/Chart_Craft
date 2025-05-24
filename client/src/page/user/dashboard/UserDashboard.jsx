@@ -73,7 +73,7 @@ const UserDashboard = () => {
   return (
     <Sidebar
       title="Chart Craft"
-      avatarUrl={bg || userInfo}
+      avatarUrl={userInfo.user.profilePic?.url || bg}
       userName={userInfo.user.username}
       links={navItems}
       logout={handleLogout}

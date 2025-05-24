@@ -139,7 +139,7 @@ const UserActivity = () => {
                 <AnimatedItem key={index} index={index}>
                   <div
                     className=" bg-neutral-50 p-4 rounded-lg shadow-sm border border-neutral-400 
-                  hover:bg-neutral-300 transition dark:bg-neutral-600 hover:dark:bg-neutral-800 flex items-center justify-between "
+                  hover:bg-neutral-300 transition dark:bg-neutral-700 hover:dark:bg-neutral-800 flex items-center justify-between "
                   >
                     <div className="pt-1 flex justify-center items-center space-x-4">
                       {actionIcons[activity.action] || (

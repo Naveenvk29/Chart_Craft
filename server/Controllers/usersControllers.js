@@ -2,6 +2,7 @@ import User from "../Models/usermodel.js";
 import asyncHandler from "../Utils/asyncHandler.js";
 import admin from "../libs/firebaseAdmin.js";
 import logAudit from "../Utils/logAudit.js";
+import { uplaodProfiePic, deleteProfilePic } from "../Utils/cloudinary.js";
 // ✅ user register controller
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -50,6 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
         email: user.email,
         role: user.role,
         totalTimeSpent: user.totalTimeSpent,
+        profilePic: user.profilePic,
       },
     });
   } catch (error) {
@@ -97,6 +99,7 @@ const loginUser = asyncHandler(async (req, res) => {
           email: user.email,
           role: user.role,
           totalTimeSpent: user.totalTimeSpent,
+          profilePic: user.profilePic,
         },
       });
     } else {
@@ -139,6 +142,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      profilePic: user.profilePic,
       createdAt: user.createdAt,
     },
   });
@@ -152,6 +156,19 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       message: "User not found",
     });
   }
+
+  if (req.file) {
+    if (user.profilePic?.public_id) {
+      await deleteProfilePic(user.profilePic.public_id);
+    }
+    const profilePicture = await uplaodProfiePic(req.file);
+    if (!profilePicture) {
+      res.status(400);
+      throw new Error("Failed to upload profile picture");
+    }
+    user.profilePic = profilePicture;
+  }
+
   user.username = req.body.username || user.username;
   user.email = req.body.email || user.email;
   const updatedUser = await user.save();
@@ -171,6 +188,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       username: updatedUser.username,
       email: updatedUser.email,
       role: updatedUser.role,
+      profilePic: updatedUser.profilePic,
     },
   });
 });
@@ -194,6 +212,7 @@ const changePasswordCurrentUser = asyncHandler(async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      profilePic: user.profilePic,
     },
   });
 });
@@ -205,6 +224,10 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
     return res.status(404).json({
       message: "User not found",
     });
+  }
+
+  if (user.profilePic?.public_id) {
+    await deleteProfilePic(user.profilePic.public_id);
   }
 
   await user.deleteOne();
@@ -221,6 +244,7 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      profilePic: user.profilePic,
     },
   });
 });
@@ -277,6 +301,8 @@ const oauthLoginUser = asyncHandler(async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        totalTimeSpent: user.totalTimeSpent,
+        profilePic: user.profilePic,
       },
     });
   } catch (error) {

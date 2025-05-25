@@ -30,6 +30,8 @@ import UserManagement from "./page/admin/UserManagement";
 import Analytics from "./page/admin/Analytics";
 import UserActivity from "./page/admin/UserActivity";
 import RoleManagement from "./page/admin/RoleManagement";
+import ForgetPassword from "./page/Auth/ForgetPassword";
+import ResetPassword from "./page/Auth/ResetPassword";
 const AppRouter = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -66,6 +68,8 @@ const AppRouter = () => {
         {/* Public auth routes */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/send-mail" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
     )
   );

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const App = () => {
   const location = useLocation();
-  const publicPaths = ["/", "/login", "/signup"];
+  const publicPaths = ["/", "/login", "/signup", "/send-mail"];
   const showLayout = publicPaths.includes(location.pathname);
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo?.user?._id || userInfo?._id;

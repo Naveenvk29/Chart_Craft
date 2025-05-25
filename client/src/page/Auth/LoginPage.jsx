@@ -8,15 +8,10 @@ import {
 import { setCredentials } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
-import {
-  FaGithub,
-  FaGoogle,
-  FaEye,
-  FaEyeSlash,
-  FaApple,
-} from "react-icons/fa6";
+import { FaGithub, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider, githubProvider } from "../../libs/firebase";
+import { motion } from "framer-motion";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -28,13 +23,10 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [login, { isLoading }] = useSigninMutation();
   const [oauthLoginUser] = useOauthLoginUserMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
+    if (userInfo) navigate("/");
   }, [userInfo, navigate]);
 
   const submitHandler = async (e) => {
@@ -80,20 +72,53 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-950 flex flex-col md:flex-row ">
-      {/* Left: Form Section */}
-      <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md space-y-6">
-          <h1 className="text-4xl font-bold text-center text-neutral-800 dark:text-neutral-100">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen bg-neutral-100 dark:bg-neutral-950 flex flex-col md:flex-row"
+    >
+      {/* Left: Form */}
+      <motion.div
+        initial={{ x: -80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="w-full md:w-1/2 flex items-center justify-center px-6 py-12"
+      >
+        <motion.div
+          className="w-full max-w-md space-y-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.1 } },
+          }}
+        >
+          <motion.h1
+            className="text-4xl font-bold text-center text-neutral-800 dark:text-neutral-100"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+          >
             Sign In
-          </h1>
-          <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
-            Welcome back! Please log in to continue.
-          </p>
+          </motion.h1>
 
-          <form onSubmit={submitHandler} className="space-y-5">
+          <motion.p
+            className="text-center text-sm text-neutral-600 dark:text-neutral-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Welcome back! Please log in to continue.
+          </motion.p>
+
+          <motion.form
+            onSubmit={submitHandler}
+            className="space-y-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             {/* Email */}
-            <div className="space-y-1">
+            <motion.div whileFocus={{ scale: 1.02 }} className="space-y-1">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
@@ -109,10 +134,10 @@ const LoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </div>
+            </motion.div>
 
             {/* Password */}
-            <div className="relative space-y-1">
+            <motion.div className="relative space-y-1">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
@@ -135,7 +160,7 @@ const LoginPage = () => {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
-            </div>
+            </motion.div>
 
             {/* Remember & Forgot */}
             <div className="flex items-center justify-between text-sm text-neutral-700 dark:text-neutral-300">
@@ -152,9 +177,9 @@ const LoginPage = () => {
                 Forgot Password?
               </Link>
             </div>
-
-            {/* Submit Button */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isLoading}
               className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
@@ -164,9 +189,8 @@ const LoginPage = () => {
               ) : (
                 "Sign In"
               )}
-            </button>
+            </motion.button>
 
-            {/* Divider */}
             <div className="flex items-center justify-center gap-4">
               <div className="h-px w-full bg-neutral-400 dark:bg-neutral-700"></div>
               <span className="text-neutral-500 text-sm w-full text-center">
@@ -175,23 +199,35 @@ const LoginPage = () => {
               <div className="h-px w-full bg-neutral-400 dark:bg-neutral-700"></div>
             </div>
 
-            {/* OAuth Buttons */}
-            <div className="space-y-2">
-              <button
+            <motion.div
+              className="space-y-2"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+                },
+              }}
+            >
+              <motion.button
                 onClick={handleGitHubLogin}
+                whileHover={{ scale: 1.02 }}
                 className="flex items-center justify-center w-full py-3 gap-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-900 transition"
               >
                 <FaGithub size={20} />
                 Continue with GitHub
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 onClick={handleGoogleLogin}
+                whileHover={{ scale: 1.02 }}
                 className="flex items-center justify-center w-full py-3 gap-3 rounded-lg bg-white text-black border border-neutral-400 hover:bg-neutral-100 transition"
               >
                 <FaGoogle size={20} className="text-red-500" />
                 Continue with Google
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             <p className="text-sm text-center text-neutral-600 dark:text-neutral-300">
               New to our platform?{" "}
@@ -202,18 +238,22 @@ const LoginPage = () => {
                 Register
               </Link>
             </p>
-          </form>
-        </div>
-      </div>
+          </motion.form>
+        </motion.div>
+      </motion.div>
 
-      {/* Right: Visual Side */}
-      <div className="hidden md:flex w-1/2 bg-neutral-50 dark:bg-neutral-800 items-center justify-center p-10">
-        <div className="max-w-md text-center space-y-6">
-          <img
-            src="https://illustrations.popsy.co/white/dashboard-monitor.svg"
-            alt="Login Illustration"
-            className="w-full h-auto"
-          />
+      <motion.div
+        initial={{ x: 80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="hidden md:flex w-1/2 bg-neutral-50 dark:bg-neutral-800 items-center justify-center p-10"
+      >
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="max-w-md text-center space-y-6"
+        >
           <h2 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">
             Unlock powerful tools and insights
           </h2>
@@ -221,9 +261,9 @@ const LoginPage = () => {
             Sign in to access your personalized dashboard, manage settings, and
             collaborate effectively.
           </p>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

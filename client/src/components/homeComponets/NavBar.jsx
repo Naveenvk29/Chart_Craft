@@ -10,9 +10,9 @@ import cn from "../../libs/utils";
 import { Link } from "react-router-dom";
 
 const NAV_ITEMS = [
-  { name: "Feature", link: "#feature" },
-  { name: "About", link: "#about" },
-  { name: "Contact", link: "#contact" },
+  { name: "Feature", link: "/#feature" },
+  { name: "About", link: "/#about" },
+  { name: "Contact", link: "/#contact" },
 ];
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -84,7 +84,7 @@ const NavBar = () => {
         )}
       >
         <div className="text-xl text-neutral-600 dark:text-neutral-300 font-bold ">
-          Chart Craft
+          <Link to="/#hero">ChartCraft</Link>
         </div>
         <div
           className="flex items-center space-x-4"
@@ -240,10 +240,14 @@ const NavBar = () => {
               </a>
             ))}
             <button className="w-full text-neutral-600 font-bold text-sm py-2 px-4 rounded-md bg-neutral-200 ">
-              <Link to="/login">Sign in</Link>
+              <Link to="/login" onClick={() => setMobileOpen(false)}>
+                Sign In
+              </Link>
             </button>
             <button className="w-full text-neutral-600 font-bold text-sm py-2 px-4 rounded-md bg-neutral-200 ">
-              <Link to="/signup">Get Started</Link>
+              <Link to="/signup" onClick={() => setMobileOpen(false)}>
+                Get Started
+              </Link>
             </button>
           </motion.div>
         )}

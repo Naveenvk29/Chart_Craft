@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const pages = [
   { link: "#", name: "Home" },
-  { link: "#features", name: "Features" },
+  { link: "#feature", name: "Features" },
   { link: "#about", name: "About" },
   { link: "#contact", name: "Contact" },
 ];

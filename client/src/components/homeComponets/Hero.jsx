@@ -9,6 +9,7 @@ const Hero = () => {
 
   return (
     <motion.div
+      id="hero"
       ref={ref}
       className={cn(
         "relative  z-20 mx-auto max-w-7xl text-center font-semibold  text-neutral-300",

@@ -9,8 +9,8 @@ const Home = () => {
     <div className="bg-neutral-100 dark:bg-neutral-950">
       <Hero />
       <FeatureSection />
-      {/* <AboutSection /> */}
-      {/* <ContactSection /> */}
+      <AboutSection />
+      <ContactSection />
     </div>
   );
 };

@@ -6,6 +6,8 @@ import { setCredentials } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { motion } from "framer-motion";
+import GlowingEffect from "../../components/homeComponets/GlowingEffect";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -25,7 +27,7 @@ const SignUp = () => {
     if (userInfo) navigate("/");
   }, [userInfo, navigate]);
 
-  const submitHandler = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("❌ Passwords do not match!");
@@ -36,127 +38,117 @@ const SignUp = () => {
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {
-      toast.error(`⚠️ ${err?.data?.message || err.error}`);
-      console.log(err);
+      toast.error(`⚠️ ${err?.data?.message || "Something went wrong"}`);
     }
   };
 
   return (
-    <div className="bg-neutral-300 dark:bg-neutral-950 min-h-screen flex flex-col md:flex-row justify-around items-center">
-      {/* Left Form Side */}
-      <div className="px-10 py-4 min-w-4xl min-h-screen flex flex-col justify-center items-center space-y-2">
-        <h1 className="text-center text-4xl font-bold tracking-tight text-neutral-600 dark:text-neutral-300 uppercase">
+    <div className="bg-neutral-200 dark:bg-neutral-950 min-h-screen flex flex-col md:flex-row items-center justify-center gap-50 px-4 py-10">
+      {/* Left Form Section */}
+      <motion.div
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-lg"
+      >
+        <h1 className="text-4xl font-bold text-center uppercase tracking-tight text-neutral-700 dark:text-neutral-200 mb-2">
           Sign Up
         </h1>
-        <p className="text-center text-sm tracking-wide font-medium text-neutral-500">
+        <p className="text-center text-sm text-neutral-500 mb-6">
           Create a new account to get started.
         </p>
 
-        <form onSubmit={submitHandler} className="space-y-5 w-xl mx-auto">
-          <div className="space-y-2">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-            >
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Username
             </label>
             <input
               type="text"
-              id="username"
-              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
-              placeholder="Enter username"
+              autoComplete="username"
+              className="w-full p-3 border border-neutral-400 rounded-md bg-transparent dark:text-white"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              placeholder="Enter username"
             />
           </div>
 
-          <div className="space-y-2">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-            >
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Email Address
             </label>
             <input
               type="email"
-              id="email"
-              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
-              placeholder="Enter email"
+              autoComplete="email"
+              className="w-full p-3 border border-neutral-400 rounded-md bg-transparent dark:text-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              placeholder="Enter email"
             />
           </div>
 
-          <div className="space-y-2 relative">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-            >
+          <div className="relative">
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Password
             </label>
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
-              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
-              placeholder="Enter password"
+              autoComplete="new-password"
+              className="w-full p-3 border border-neutral-400 rounded-md bg-transparent dark:text-white"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              placeholder="Enter password"
             />
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-6 top-11 text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
+              aria-label="Toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[45px] text-neutral-600 dark:text-neutral-300"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
 
-          <div className="space-y-2 relative">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-            >
+          <div className="relative">
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Confirm Password
             </label>
             <input
               type={showConfirmPassword ? "text" : "password"}
-              id="confirmPassword"
-              className="w-full p-3 border border-neutral-500 rounded-md focus:ring-2 focus:ring-neutral-600 focus:outline-none text-neutral-800 dark:text-neutral-300 bg-transparent placeholder-neutral-600"
-              placeholder="Confirm password"
+              autoComplete="new-password"
+              className="w-full p-3 border border-neutral-400 rounded-md bg-transparent dark:text-white"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              placeholder="Confirm password"
             />
             <button
               type="button"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-6 top-11 text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
+              aria-label="Toggle confirm password visibility"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-[45px] text-neutral-600 dark:text-neutral-300"
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
 
-          <div className="text-center">
-            <p className="text-md text-neutral-600 dark:text-neutral-300">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="hover:underline hover:text-green-500"
-              >
-                <span className="text-lg text-green-600 font-bold">
-                  Sign In
-                </span>
-              </Link>
-            </p>
+          <div className="text-center text-sm text-neutral-600 dark:text-neutral-300">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-green-600 hover:underline"
+            >
+              Sign In
+            </Link>
           </div>
 
           <button
-            disabled={isLoading}
             type="submit"
-            className="w-full p-3 bg-gray-600 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
+            className="w-full p-3 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition disabled:opacity-50"
           >
             {isLoading ? (
               <div className="flex justify-center">
@@ -167,30 +159,39 @@ const SignUp = () => {
             )}
           </button>
         </form>
-      </div>
+      </motion.div>
 
-      {/* Right Panel */}
-      <div className="bg-neutral-100 dark:bg-neutral-800 min-h-screen min-w-4xl flex flex-col justify-center items-center p-10">
-        <div className="bg-bg-neutral-50 text-neutral-900 dark:text-neutral-100 rounded-2xl p-10 shadow-xl w-4/5">
-          <h2 className="text-2xl font-bold mb-4">Welcome to Chart Craft!</h2>
-          <p className="text-md leading-relaxed">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda,
-            repudiandae laborum neque eos eaque necessitatibus. Nulla obcaecati
-            soluta at ad expedita. Amet rem architecto, quasi error, voluptatem
-            accusamus odit temporibus fuga doloribus placeat consectetur optio.
-            Maxime ea, vitae ipsa quo dolor ipsum ut harum sed hic incidunt
-            labore, laboriosam facilis itaque assumenda cum reprehenderit modi?
-            Hic accusamus ex a natus.
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="relative w-full max-w-lg"
+      >
+        <GlowingEffect
+          blur={10}
+          proximity={80}
+          spread={40}
+          glow={true}
+          movementDuration={1.4}
+          borderWidth={6}
+          disabled={false}
+        />
+        <div className="bg-white dark:bg-neutral-800 p-8 rounded-3xl shadow-xl text-center">
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
+            Welcome to Chart Craft!
+          </h2>
+          <p className="text-neutral-700 dark:text-neutral-300 text-sm leading-relaxed mb-4">
+            Chart Craft helps you transform data into beautiful visualizations —
+            fast, easy, and code-free. Whether you're a student or pro, we’ve
+            got you covered.
           </p>
-          <div className="mt-6">
-            <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Collaborate with your team</li>
-              <li>Secure and easy authentication</li>
-              <li>Access powerful tools and analytics</li>
-            </ul>
-          </div>
+          <ul className="text-left list-disc list-inside text-neutral-600 dark:text-neutral-400 text-sm space-y-1">
+            <li>Collaborate with your team</li>
+            <li>Secure and fast authentication</li>
+            <li>Access powerful analytics tools</li>
+          </ul>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

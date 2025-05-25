@@ -8,21 +8,32 @@ import EditProfileModal from "../../../components/userModal/EditProfileModal";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import EditProfiePicModal from "../../../components/userModal/EditProfiePicModal";
+import { updateUserInfo } from "../../../redux/features/authSlice";
+import { useDispatch } from "react-redux";
+
 const UserProfile = () => {
-  const { data: userDetails, error, isLoading } = useGetProfileQuery();
-  const profilePicture = userDetails.user.profilePic?.url || testpp;
+  const { data: userDetails, error, isLoading, refetch } = useGetProfileQuery();
+  const profilePicture = userDetails?.user.profilePic?.url || testpp;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
   const [isPicModalOpen, setIsPicModalOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handlePicUpload = async (file) => {
     const formData = new FormData();
     formData.append("profilePic", file);
+
     try {
-      await updateProfile(formData).unwrap();
+      const updatedUser = await updateProfile(formData).unwrap();
+      refetch();
+      // 🔄 Update the Redux store with the new profilePic
+      dispatch(updateUserInfo(updatedUser.user));
+
       toast.success("Profile picture updated");
       setIsPicModalOpen(false);
     } catch (err) {
+      console.log(err);
       toast.error("Failed to upload profile picture");
     }
   };

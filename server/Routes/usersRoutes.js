@@ -9,6 +9,8 @@ import {
   deleteCurrentUser,
   oauthLoginUser,
   updateSessionTime,
+  resetPassword,
+  forgetPassword,
 } from "../Controllers/usersControllers.js";
 import { isAuthenticated } from "../Middlewares/authMiddleware.js";
 import { uploadImage } from "../Middlewares/multerImageMiddleware.js";
@@ -33,5 +35,8 @@ router
   .patch(isAuthenticated, changePasswordCurrentUser);
 
 router.post("/session", isAuthenticated, updateSessionTime);
+
+router.post("/forget-password", forgetPassword);
+router.post("/reset-password", resetPassword);
 
 export default router;

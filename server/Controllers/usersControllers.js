@@ -3,6 +3,9 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import admin from "../libs/firebaseAdmin.js";
 import logAudit from "../Utils/logAudit.js";
 import { uplaodProfiePic, deleteProfilePic } from "../Utils/cloudinary.js";
+import crypto from "crypto";
+import sendEmail from "../Utils/sendEmail.js";
+
 // ✅ user register controller
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -331,6 +334,68 @@ const updateSessionTime = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Session updated", user });
 });
 
+const forgetPassword = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  user.resetPasswordToken = crypto.randomBytes(32).toString("hex");
+  user.resetPasswordExpires = Date.now() + 5 * 60 * 1000;
+  await user.save();
+
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${user.resetPasswordToken}`;
+
+  await sendEmail(
+    user.email,
+    "Password Reset",
+    `Click here to reset your password: <a href="${resetUrl}">Reset Password</a>`
+  );
+  res.status(200).json({
+    message: "Password reset link sent to your email",
+  });
+});
+
+// Reset password controller
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({
+      message: "Token and new password are required",
+    });
+  }
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({
+      message: "Invalid or expired password reset token",
+    });
+  }
+
+  user.password = newPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+  await logAudit({
+    user,
+    action: "RESET_PASSWORD",
+    targetId: user._id,
+    targetType: "User",
+    description: `User ${user.username} reset their password successfully.`,
+  });
+  res.status(200).json({
+    message: "Password has been reset successfully",
+  });
+});
+
 export {
   registerUser,
   loginUser,
@@ -341,4 +406,6 @@ export {
   deleteCurrentUser,
   oauthLoginUser,
   updateSessionTime,
+  forgetPassword,
+  resetPassword,
 };

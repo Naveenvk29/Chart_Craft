@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-const chartTypes = ["bar", "line", "pie"];
+const chartTypes = ["bar"]; // For now, just 'bar'
 
 const ThreeChartSelector = ({ data = [] }) => {
   const [chartType, setChartType] = useState("bar");
@@ -15,7 +17,6 @@ const ThreeChartSelector = ({ data = [] }) => {
         3D Chart Visualization
       </h2>
 
-      {/* Selectors */}
       <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
         <select
           value={chartType}
@@ -44,6 +45,8 @@ const ThreeChartSelector = ({ data = [] }) => {
           ))}
         </select>
       </div>
+
+      {/* <div ref={mountRef} className="relative  h-[400px] bg-gray-100 " /> */}
     </div>
   );
 };

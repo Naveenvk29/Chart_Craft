@@ -19,7 +19,6 @@ const SmartAnalytics = ({ data }) => {
   const [aiChartSuggestion, setAiChartSuggestion] = useState("");
   const [loading, setLoading] = useState("");
   const [triggerInsights] = useSmartanalyticsMutation();
-  console.log(data);
 
   const convertToCSV = (jsonArray) => {
     const headers = Object.keys(jsonArray[0]).join(",");
@@ -28,7 +27,6 @@ const SmartAnalytics = ({ data }) => {
   };
 
   const csv = convertToCSV(data);
-  console.log(csv);
   const callAI = async (type, setter) => {
     try {
       setLoading(type);

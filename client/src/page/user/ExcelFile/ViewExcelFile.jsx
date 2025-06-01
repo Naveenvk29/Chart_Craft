@@ -40,7 +40,7 @@ const ViewExcelFile = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="w-full max-w-7xl mx-auto mt-20">
+      <div className="w-full max-w-7xl mx-auto mt-10 -mb-5">
         <motion.h1
           className="text-3xl font-bold mb-4"
           initial={{ opacity: 0, x: -20 }}

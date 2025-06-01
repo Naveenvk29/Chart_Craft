@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Bar, Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,7 +13,6 @@ import {
   ArcElement,
   RadialLinearScale,
 } from "chart.js";
-import html2canvas from "html2canvas";
 import { motion } from "motion/react";
 
 ChartJS.register(
@@ -43,17 +42,18 @@ const ChartSelector = ({ data }) => {
   const [xField, setXField] = useState("");
   const [yField, setYField] = useState("");
 
+  const chartRef = useRef(null);
+
   const fields = data.length > 0 ? Object.keys(data[0]) : [];
 
-  const generateRandomColors = (count) => {
-    return Array.from(
+  const generateRandomColors = (count) =>
+    Array.from(
       { length: count },
       () =>
         `rgba(${Math.floor(Math.random() * 255)}, 
              ${Math.floor(Math.random() * 255)}, 
              ${Math.floor(Math.random() * 255)}, 0.6)`
     );
-  };
 
   const values = data.map((item) => item[yField]);
   const labels = data.map((item) => item[xField]);
@@ -66,7 +66,7 @@ const ChartSelector = ({ data }) => {
         label: yField,
         data: values,
         backgroundColor: backgroundColors,
-        borderColor: backgroundColors.map((color) => color.replace("0.6", "1")),
+        borderColor: backgroundColors.map((c) => c.replace("0.6", "1")),
         borderWidth: 1,
         fill: chartType !== "line",
       },
@@ -75,42 +75,47 @@ const ChartSelector = ({ data }) => {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // allow container to control height
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
-          color: "#fff", // for dark mode text
+          color: "#fff",
         },
-      },
-      background: {
-        color: "#ffffff", // white canvas background
       },
     },
   };
 
   const renderChart = () => {
+    const commonProps = {
+      data: chartData,
+      options: chartOptions,
+      ref: chartRef,
+    };
     switch (chartType) {
       case "bar":
-        return <Bar data={chartData} options={chartOptions} />;
+        return <Bar {...commonProps} />;
       case "line":
-        return <Line data={chartData} options={chartOptions} />;
+        return <Line {...commonProps} />;
       case "pie":
-        return <Pie data={chartData} options={chartOptions} />;
+        return <Pie {...commonProps} />;
       case "doughnut":
-        return <Doughnut data={chartData} options={chartOptions} />;
+        return <Doughnut {...commonProps} />;
       case "polarArea":
-        return <PolarArea data={chartData} options={chartOptions} />;
+        return <PolarArea {...commonProps} />;
       default:
-        return <Bar data={chartData} options={chartOptions} />;
+        return <Bar {...commonProps} />;
     }
   };
 
-  const downloadImage = async (type = "png") => {
-    const chartElement = document.getElementById("chart-container");
-    const canvas = await html2canvas(chartElement);
+  const handleDownload = (format) => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    const canvas = chart.canvas;
+    const mimeType = format === "jpg" ? "image/jpeg" : "image/png";
     const link = document.createElement("a");
-    link.download = `chart.${type}`;
-    link.href = canvas.toDataURL(`image/${type}`);
+    link.href = canvas.toDataURL(mimeType);
+    link.download = `chart.${format}`;
     link.click();
   };
 
@@ -183,18 +188,18 @@ const ChartSelector = ({ data }) => {
       {xField && yField && (
         <>
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-end items-end mb-4"
+            className="flex gap-4 justify-end items-end mb-4"
             variants={fadeIn}
             custom={0.3}
           >
             <button
-              onClick={() => downloadImage("png")}
+              onClick={() => handleDownload("png")}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
             >
               Download PNG
             </button>
             <button
-              onClick={() => downloadImage("jpeg")}
+              onClick={() => handleDownload("jpg")}
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
             >
               Download JPG

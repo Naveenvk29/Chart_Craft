@@ -8,7 +8,11 @@ import {
 import { Menu, Moon, Sun, X } from "lucide-react";
 import cn from "../../libs/utils";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  toggleDarkMode,
+  initializeTheme,
+} from "../../redux/features/themeSlice";
 const NAV_ITEMS = [
   { name: "Feature", link: "/#feature" },
   { name: "About", link: "/#about" },
@@ -16,29 +20,16 @@ const NAV_ITEMS = [
 ];
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(null);
+  const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
-  const toggletheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
   useEffect(() => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setDarkMode(prefersDark);
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+    dispatch(initializeTheme());
+  }, [dispatch]);
+
+  const handleToggleTheme = () => {
+    dispatch(toggleDarkMode());
+  };
 
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(null);
@@ -136,14 +127,14 @@ const NavBar = () => {
               {darkMode ? (
                 <Sun
                   aria-label="Enable dark mode"
-                  onClick={toggletheme}
+                  onClick={handleToggleTheme}
                   className="cursor-pointer text-neutral-600 dark:text-neutral-300"
                   size={18}
                 />
               ) : (
                 <Moon
                   aria-label="Enable light mode"
-                  onClick={toggletheme}
+                  onClick={handleToggleTheme}
                   className="cursor-pointer text-neutral-600 dark:text-neutral-300"
                   size={18}
                 />

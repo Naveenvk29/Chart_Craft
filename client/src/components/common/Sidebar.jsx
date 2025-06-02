@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, animate } from "motion/react";
 import { Menu, X, LogOut, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  toggleDarkMode,
+  initializeTheme,
+} from "../../redux/features/themeSlice";
 
 const Sidebar = ({
   title = "Your App",
@@ -12,29 +17,16 @@ const Sidebar = ({
   logout,
 }) => {
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(null);
+  const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
-  const toggletheme = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
   useEffect(() => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setDarkMode(prefersDark);
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+    dispatch(initializeTheme());
+  }, [dispatch]);
+
+  const handleToggleTheme = () => {
+    dispatch(toggleDarkMode());
+  };
 
   return (
     <div className="md:flex w-full h-screen bg-white dark:bg-neutral-950">
@@ -94,14 +86,14 @@ const Sidebar = ({
                   {darkMode ? (
                     <Sun
                       aria-label="Enable dark mode"
-                      onClick={toggletheme}
+                      onClick={handleToggleTheme}
                       className="cursor-pointer text-neutral-600 dark:text-neutral-300"
                       size={20}
                     />
                   ) : (
                     <Moon
                       aria-label="Enable light mode"
-                      onClick={toggletheme}
+                      onClick={handleToggleTheme}
                       className="cursor-pointer text-neutral-600 dark:text-neutral-300"
                       size={20}
                     />

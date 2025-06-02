@@ -1,11 +1,15 @@
 import { motion } from "motion/react";
 import cn from "../../libs/utils";
-import bg from "../../assets/dashboard.webp";
+import dark from "../../assets/dark.png";
+import light from "../../assets/light.png";
 import { useRef } from "react";
 import GlowingEffect from "./GlowingEffect";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Hero = () => {
   const ref = useRef(null);
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   return (
     <motion.div
@@ -83,15 +87,17 @@ const Hero = () => {
         />
         <div className="rounded-lg relative overflow-hidden">
           <img
-            className="w-full h-auto rounded-lg "
-            src="https://cryptgen-template-aceternity.vercel.app/_next/image?url=%2Fdashboard.webp&w=1920&q=75"
+            className="w-full h-auto rounded-lg  border-2 border-neutral-500 p-5"
+            src={darkMode ? dark : light}
             alt="Dashboard"
           />
+
           <div
-            className="absolute inset-0 "
+            className="absolute inset-0"
             style={{
-              background:
-                "linear-gradient(179.87deg, rgba(0, 0, 0, 0) 0.11%, rgba(0, 0, 0, 0.8) 69.48%, #000000 92.79%)",
+              background: darkMode
+                ? "linear-gradient(179.87deg, rgba(0, 0, 0, 0) 0.11%, rgba(0, 0, 0, 0.8) 69.48%, #000000 92.79%)"
+                : "linear-gradient(179.87deg, rgba(255, 255, 255, 0) 0.11%, rgba(255, 255, 255, 0.5) 69.48%, #ffffff 92.79%)",
             }}
           ></div>
         </div>

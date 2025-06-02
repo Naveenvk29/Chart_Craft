@@ -118,7 +118,7 @@ const UserActivity = () => {
               className={`px-3 py-1 rounded-full text-sm transition-colors my-5 duration-200  ${
                 selectedAction === type
                   ? "bg-blue-600 text-white"
-                  : "bg-gray-700 dark:bg-neutral-200 text-neutral-700 hover:bg-neutral-600 hover:text-neutral-100 "
+                  : "bg-gray-700 text-neutral-300 dark:bg-neutral-200 dark:text-neutral-700 hover:bg-neutral-600 hover:text-neutral-100 "
               }`}
             >
               {type}

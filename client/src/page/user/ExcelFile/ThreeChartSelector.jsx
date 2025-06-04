@@ -1,177 +1,117 @@
-import { useState, useEffect, useRef } from "react";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import BarChart3D from "../../../components/3dCharts/BarChart3D.jsx";
+import DonutChart3D from "../../../components/3dCharts/DonutChart3D.jsx";
+import PieChart3D from "../../../components/3dCharts/PieChart3D.jsx";
+import { motion } from "motion/react";
 
-const chartTypes = ["bar", "line", "pie", "doughnut"];
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay, duration: 0.5 },
+  }),
+};
 
+const chartTypes = ["bar", "pie", "donut"];
 const ThreeChartSelector = ({ data }) => {
   const [chartType, setChartType] = useState("bar");
   const [xField, setXField] = useState("");
   const [yField, setYField] = useState("");
 
-  const mountRef = useRef(null);
-  const fontRef = useRef(null);
-  const sceneRef = useRef(null);
-  const rendererRef = useRef(null);
-  const cameraRef = useRef(null);
-  const controlsRef = useRef(null);
-
   const dataFields = data.length > 0 ? Object.keys(data[0]) : [];
-
-  // Load font only once
-  useEffect(() => {
-    const loader = new FontLoader();
-    loader.load(
-      "https://unpkg.com/three@0.126.0/examples/fonts/helvetiker_regular.typeface.json",
-      (font) => {
-        fontRef.current = font;
-      }
-    );
-  }, []);
-
-  // Main chart render effect
-  useEffect(() => {
-    if (!fontRef.current || !xField || !yField || data.length === 0) return;
-
-    // Cleanup previous scene
-    if (rendererRef.current) {
-      rendererRef.current.dispose();
-      if (mountRef.current) {
-        mountRef.current.innerHTML = "";
-      }
-    }
-
-    const width = 600;
-    const height = 400;
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf0f0f0);
-
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 50);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(width, height);
-    mountRef.current.appendChild(renderer.domElement);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-
-    // Lighting
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(10, 20, 20);
-    scene.add(light);
-
-    const axesHelper = new THREE.AxesHelper(20);
-    scene.add(axesHelper);
-
-    const objectsToDispose = [];
-
-    if (chartType === "bar") {
-      const barWidth = 1;
-      const gap = 0.5;
-      const maxVal = Math.max(...data.map((d) => Number(d[yField])));
-
-      data.forEach((d, i) => {
-        const value = Number(d[yField]);
-        const heightVal = (value / maxVal) * 15;
-
-        const geometry = new THREE.BoxGeometry(barWidth, heightVal, barWidth);
-        const material = new THREE.MeshStandardMaterial({ color: 0x0074d9 });
-        const bar = new THREE.Mesh(geometry, material);
-
-        bar.position.x =
-          i * (barWidth + gap) - ((data.length - 1) * (barWidth + gap)) / 2;
-        bar.position.y = heightVal / 2;
-
-        scene.add(bar);
-        objectsToDispose.push(geometry, material);
-
-        // Label
-        const textGeo = new TextGeometry(String(d[xField]), {
-          font: fontRef.current,
-          size: 0.7,
-          height: 0.1,
-        });
-        const textMat = new THREE.MeshBasicMaterial({ color: 0x333333 });
-        const textMesh = new THREE.Mesh(textGeo, textMat);
-
-        textMesh.position.set(bar.position.x - 0.5, -1.5, 0);
-        textMesh.rotation.x = -Math.PI / 8;
-
-        scene.add(textMesh);
-        objectsToDispose.push(textGeo, textMat);
-      });
-    }
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    sceneRef.current = scene;
-    cameraRef.current = camera;
-    rendererRef.current = renderer;
-    controlsRef.current = controls;
-
-    // Cleanup function
-    return () => {
-      controls.dispose();
-      renderer.dispose();
-      objectsToDispose.forEach((obj) => obj.dispose && obj.dispose());
-      if (mountRef.current) {
-        mountRef.current.innerHTML = "";
-      }
-    };
-  }, [chartType, xField, yField, data]);
+  const isReady = xField && yField;
 
   return (
-    <div>
-      <div style={{ marginBottom: 16 }}>
-        <label>
-          Chart Type:{" "}
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+      className="w-full mt-14 px-4 md:px-10"
+    >
+      <motion.h3
+        className="text-xl font-semibold text-center mb-8"
+        variants={fadeIn}
+        custom={0.1}
+      >
+        3D Chart Visualization
+      </motion.h3>
+      <motion.div
+        className="flex flex-col lg:flex-row items-center justify-center gap-4 mb-10"
+        variants={fadeIn}
+        custom={0.2}
+      >
+        <div>
+          <label className="block text-sm font-medium mb-1">Chart Type:</label>
           <select
+            className="border rounded p-2 dark:bg-neutral-800"
             value={chartType}
             onChange={(e) => setChartType(e.target.value)}
           >
             {chartTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
+              <option key={type}>{type}</option>
             ))}
           </select>
-        </label>
-        <label style={{ marginLeft: 16 }}>
-          X Field:{" "}
-          <select value={xField} onChange={(e) => setXField(e.target.value)}>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">X Field:</label>
+          <select
+            className="border rounded p-2 dark:bg-neutral-800"
+            value={xField}
+            onChange={(e) => setXField(e.target.value)}
+          >
             <option value="">Select</option>
             {dataFields.map((field) => (
-              <option key={field} value={field}>
-                {field}
-              </option>
+              <option key={field}>{field}</option>
             ))}
           </select>
-        </label>
-        <label style={{ marginLeft: 16 }}>
-          Y Field:{" "}
-          <select value={yField} onChange={(e) => setYField(e.target.value)}>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Y Field:</label>
+          <select
+            className="border rounded p-2 dark:bg-neutral-800"
+            value={yField}
+            onChange={(e) => setYField(e.target.value)}
+          >
             <option value="">Select</option>
             {dataFields.map((field) => (
-              <option key={field} value={field}>
-                {field}
-              </option>
+              <option key={field}>{field}</option>
             ))}
           </select>
-        </label>
-      </div>
-      <div
-        ref={mountRef}
-        style={{ width: 600, height: 400, border: "1px solid #ccc" }}
-      />
-    </div>
+        </div>
+      </motion.div>
+
+      {isReady && (
+        <motion.div
+          className=" rounded w-full h-[400px]  flex justify-center items-center"
+          variants={fadeIn}
+          custom={0.4}
+        >
+          <Canvas camera={{ position: [0, 5, 15], fov: 60 }}>
+            <ambientLight />
+            <pointLight position={[10, 10, 10]} />
+            {chartType === "bar" && (
+              <BarChart3D data={data} xKey={xField} yKey={yField} />
+            )}
+            {/* {chartType === "line" && (
+              <LineChart3D data={data} xKey={xField} yKey={yField} />
+            )} */}
+            {/* {chartType === "area" && (
+              <AreaChart3D data={data} xKey={xField} yKey={yField} />
+            )} */}
+            {chartType === "pie" && (
+              <PieChart3D data={data} xKey={xField} yKey={yField} />
+            )}
+            {chartType === "donut" && (
+              <DonutChart3D data={data} xKey={xField} yKey={yField} />
+            )}
+            <OrbitControls />
+          </Canvas>
+        </motion.div>
+      )}
+    </motion.div>
   );
 };
 
